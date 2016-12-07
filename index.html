@@ -28,9 +28,23 @@
 
 	<body>
 		<div class="mui-content">
-			<a href="detail.html">测试</a>
+			<a href="#" onclick="gotoDetail();">测试</a>
 		</div>
 		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: false,		//关闭侧滑
+				statusBarBackground: '#f7f7f7'
+			});
+			mui.plusReady(function(){});
+			//跳转到detail
+			function gotoDetail(){
+				mui.openWindow({
+					url: 'detail.html',
+					id: 'detail'
+				});
+			}
+		</script>
 	</body>
 
 </html>
