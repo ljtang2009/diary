@@ -28,22 +28,54 @@
 
 	<body>
 		<div class="mui-content">
-			<a href="#" onclick="gotoDetail();">测试</a>
+			<!--<a href="#" onclick="gotoDetail();">测试</a>-->
+			<div id="div_gb" style="z-index: 0; width: 100%; height: 600px;">
+			</div>
+			<div id="div_mountain_1" style="z-index: 1; width: 100%; height: 70px; position: absolute; top:500px; left: 0px;background-repeat: no-repeat; background-size: 100% 100%;">
+			</div>
+			<div id="div_mountain_2" style="z-index: 2; width: 100%; height: 70px; position: absolute; top: 400px; left: 0px;background-repeat: no-repeat; background-size: 100% 100%;">
+			</div>
+			<div id="div_mountain_3" style="z-index: 3; width: 100%; height: 70px; position: absolute; top: 300px; left: 0px;background-repeat: no-repeat; background-size: 100% 100%;">
+			</div>
 		</div>
 		<script src="js/mui.min.js"></script>
+		<script src="js/utility.js"></script>
 		<script type="text/javascript">
+			/**
+			 * @description 是否晚上
+			 */
+			var isNight = false;
 			mui.init({
 				swipeBack: false,		//关闭侧滑
 				statusBarBackground: '#f7f7f7'
 			});
-			mui.plusReady(function(){});
-			//跳转到detail
-			function gotoDetail(){
-				mui.openWindow({
-					url: 'detail.html',
-					id: 'detail'
-				});
-			}
+			mui.plusReady(function(){
+				isNight = utility.isNight();
+				var styleWithTime = utility.getStyleWithTime();
+				//背景
+				var div_gb = document.getElementById("div_gb");
+				console.log(window.screen.availHeight);
+//				console.log(window.screen.width);
+//				div_gb.style.height = window.screen.height + 'px';
+				div_gb.style.background = styleWithTime.bg;
+				utility.getStyleWithTime();
+				//moutain1
+				var div_mountain_1 = document.getElementById("div_mountain_1");
+				div_mountain_1.style.backgroundImage = "url(image/" + styleWithTime.mountain1 + ")";
+				//mountain2
+				var div_mountain_2 = document.getElementById("div_mountain_2");
+				div_mountain_2.style.backgroundImage = "url(image/" + styleWithTime.mountain2 + ")";
+				//mountain2
+				var div_mountain_3 = document.getElementById("div_mountain_3");
+				div_mountain_3.style.backgroundImage = "url(image/" + styleWithTime.mountain3 + ")";
+			});
+//			//跳转到detail
+//			function gotoDetail(){
+//				mui.openWindow({
+//					url: 'detail.html',
+//					id: 'detail'
+//				});
+//			}
 		</script>
 	</body>
 

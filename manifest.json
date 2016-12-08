@@ -199,5 +199,33 @@
                 }
             }
         }
-    }
+    },"fullscreen":false,
+	"dependencies": {
+		"pages": {
+			"index.html": {
+				"resources": [
+					"js/utility.js",
+					"image/night_mountain_3.png",
+					"js/mui.min.js",
+					"css/mui.min.css",
+					"image/night_mountain_2.png",
+					"image/night_mountain_1.png"
+				],
+				"refer": [],
+				"priority": 0
+			}
+		},
+		"idle": {
+			"resources": [
+				"image/day_mountain_1.png",
+				"detail.html",
+				"image/day_mountain_3.png",
+				"image/day_mountain_2.png",
+				"fonts/mui.ttf",
+				"js/mui.js",
+				"css/mui.css",
+				"README.md"
+			]
+		}
+	}
 }
