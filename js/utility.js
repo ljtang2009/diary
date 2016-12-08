@@ -23,12 +23,14 @@
 			result.mountain1 = "night_mountain_1.png";		//山图片1
 			result.mountain2 = "night_mountain_2.png";		//山图片2
 			result.mountain3 = "night_mountain_3.png";		//山图片2
+			result.mainButtonColor = "#9EBEDF";				//主按钮颜色
 		}
 		else {
 			result.bg = "linear-gradient(to bottom, #FEDE84, #FCE8B4)";
 			result.mountain1 = "day_mountain_1.png";
 			result.mountain2 = "day_mountain_2.png";
 			result.mountain3 = "day_mountain_3.png";
+			result.mainButtonColor = "#FFF2CF";
 		}
 		return result;
 	}
