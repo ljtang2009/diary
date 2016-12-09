@@ -6,6 +6,14 @@
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		<link rel="stylesheet" href="css/mui.min.css">
 		<title>diary</title>
+		<style>
+			/**
+			 * 隐藏滚动条
+			 */
+			body::-webkit-scrollbar{
+				display: none;
+			}
+		</style>
 		<!--<script type="text/javascript">
 			// 扩展API是否准备好，如果没有则监听“plusready"事件
 			if(window.plus) {
@@ -39,9 +47,12 @@
 			</div>
 			<div id="divMainButton" style="z-index: 4; position: absolute; border-radius: 100%;">
 			</div>
-			<!--<div id="divMainButton" style="z-index: 4; position: absolute; top: 100px; left: 100px; width: 100px; height: 100px; border-radius: 50%; box-shadow: 40px 20px 0 0 #9EBEDF;">
-				月亮
-			</div>-->
+			<div id="divDiaryList" style="z-index: 5; position: absolute; width: 100%; background-color: #A7A63F;">
+				<ul style="list-style-type:none; padding: 0; margin: 0;">
+					<li style="background-color: red;">1</li>
+					<li>2</li>
+				</ul>
+			</div>
 		</div>
 		<script src="js/mui.min.js"></script>
 		<script src="js/utility.js"></script>
@@ -74,67 +85,67 @@
 				statusBarBackground: '#f7f7f7'
 			});
 			mui.plusReady(function(){
-				//开始拖动
-				document.body.addEventListener('touchstart', function (event) {
-					if (finishInit){
-						//停止主按钮上下晃动的动画
-						if(tweenAnimationUP){
-							tweenAnimationUP.kill();
-						}
-						if(tweenAnimationDown){
-							tweenAnimationDown.kill();
-						}
-						if(tweenMainButtonAnimationBack){
-							tweenMainButtonAnimationBack.kill();
-						}
-						if(tweenMountain1AnimationBack){
-							tweenMountain1AnimationBack.kill();
-						}
-						if(tweenMountain2AnimationBack){
-							tweenMountain2AnimationBack.kill();
-						}
-						if(tweenMountain3AnimationBack){
-							tweenMountain3AnimationBack.kill();
-						}
-						//获取拖动点初始位置
-						touchStartY = event.changedTouches[0].pageY;
-						touchStartMainButtonTop = divMainButton.offsetTop;
-					}
-				}, false);
-				//拖动中
-				document.body.addEventListener('touchmove', function (event) {
-					if (finishInit){
-						//拖动百分比，正式为下拉，负数为上拉
-						var touch_percent = (event.changedTouches[0].pageY - touchStartY) / window.innerHeight;
-						if (touch_percent > 0){
-							divMainButton.style.top = divMainButtonInitTop + (100 * touch_percent) + 'px';
-							divMountain1.style.top = divMountain1InitTop + (100 * touch_percent) + 'px';
-							divMountain2.style.top = divMountain2InitTop + (100 * touch_percent * 0.8) + 'px';
-							divMountain3.style.top = divMountain3InitTop + (100 * touch_percent * 0.6) + 'px';
-						}
-						else {
-							divMainButton.style.top = divMainButtonInitTop + (event.changedTouches[0].pageY - touchStartY) + 'px';
-							divMountain1.style.top = divMountain1InitTop + (event.changedTouches[0].pageY - touchStartY) + 'px';
-							divMountain2.style.top = divMountain2InitTop + (event.changedTouches[0].pageY - touchStartY) + 'px';
-							divMountain3.style.top = divMountain3InitTop + (event.changedTouches[0].pageY - touchStartY) + 'px';
-						}
-					}
-					//取消拖动
-					event.preventDefault();
-				}, false);
-				//拖动结束
-				document.body.addEventListener('touchend', function (event) {
-					if (finishInit){
-						//回到原来位置
-						tweenMainButtonAnimationBack = TweenLite.to(divMainButton, 1, {top: divMainButtonInitTop + "px", onComplete:function(){
-							//开始主键动画
-							setMainButtonAnimation();
-						}});
-						tweenMountain1AnimationBack = TweenLite.to(divMountain1, 1, {top: divMountain1InitTop + "px"});
-						tweenMountain2AnimationBack = TweenLite.to(divMountain2, 1, {top: divMountain2InitTop + "px"});
-						tweenMountain3AnimationBack = TweenLite.to(divMountain3, 1, {top: divMountain3InitTop + "px"});
-					}
-				}, false);
+//				//开始拖动
+//				document.body.addEventListener('touchstart', function (event) {
+//					if (finishInit){
+//						//停止主按钮上下晃动的动画
+//						if(tweenAnimationUP){
+//							tweenAnimationUP.kill();
+//						}
+//						if(tweenAnimationDown){
+//							tweenAnimationDown.kill();
+//						}
+//						if(tweenMainButtonAnimationBack){
+//							tweenMainButtonAnimationBack.kill();
+//						}
+//						if(tweenMountain1AnimationBack){
+//							tweenMountain1AnimationBack.kill();
+//						}
+//						if(tweenMountain2AnimationBack){
+//							tweenMountain2AnimationBack.kill();
+//						}
+//						if(tweenMountain3AnimationBack){
+//							tweenMountain3AnimationBack.kill();
+//						}
+//						//获取拖动点初始位置
+//						touchStartY = event.changedTouches[0].pageY;
+//						touchStartMainButtonTop = divMainButton.offsetTop;
+//					}
+//				}, false);
+//				//拖动中
+//				document.body.addEventListener('touchmove', function (event) {
+//					if (finishInit){
+//						//拖动百分比，正式为下拉，负数为上拉
+//						var touch_percent = (event.changedTouches[0].pageY - touchStartY) / window.innerHeight;
+//						if (touch_percent > 0){
+//							divMainButton.style.top = divMainButtonInitTop + (100 * touch_percent) + 'px';
+//							divMountain1.style.top = divMountain1InitTop + (100 * touch_percent) + 'px';
+//							divMountain2.style.top = divMountain2InitTop + (100 * touch_percent * 0.8) + 'px';
+//							divMountain3.style.top = divMountain3InitTop + (100 * touch_percent * 0.6) + 'px';
+//						}
+//						else {
+//							divMainButton.style.top = divMainButtonInitTop + (event.changedTouches[0].pageY - touchStartY) + 'px';
+//							divMountain1.style.top = divMountain1InitTop + (event.changedTouches[0].pageY - touchStartY) + 'px';
+//							divMountain2.style.top = divMountain2InitTop + (event.changedTouches[0].pageY - touchStartY) + 'px';
+//							divMountain3.style.top = divMountain3InitTop + (event.changedTouches[0].pageY - touchStartY) + 'px';
+//						}
+//					}
+//					//取消拖动
+//					event.preventDefault();
+//				}, false);
+//				//拖动结束
+//				document.body.addEventListener('touchend', function (event) {
+//					if (finishInit){
+//						//回到原来位置
+//						tweenMainButtonAnimationBack = TweenLite.to(divMainButton, 1, {top: divMainButtonInitTop + "px", onComplete:function(){
+//							//开始主键动画
+//							setMainButtonAnimation();
+//						}});
+//						tweenMountain1AnimationBack = TweenLite.to(divMountain1, 1, {top: divMountain1InitTop + "px"});
+//						tweenMountain2AnimationBack = TweenLite.to(divMountain2, 1, {top: divMountain2InitTop + "px"});
+//						tweenMountain3AnimationBack = TweenLite.to(divMountain3, 1, {top: divMountain3InitTop + "px"});
+//					}
+//				}, false);
 				plus.screen.lockOrientation("portrait-primary");	//锁定竖屏
 				plus.device.setWakelock(true);		//屏幕常亮
 				styleWithTime = utility.getStyleWithTime();
@@ -142,7 +153,6 @@
 				var divGB = document.getElementById("divGB");
 				divGB.style.height = window.innerHeight + 'px';
 				divGB.style.background = styleWithTime.bg;
-				utility.getStyleWithTime();
 				//moutain1
 				divMountain1.style.backgroundImage = "url(image/" + styleWithTime.mountain1 + ")";
 				divMountain1.style.height = divMountain1.clientWidth * 0.4 + 'px';
@@ -165,6 +175,10 @@
 				TweenLite.to(divMountain2, 0.8, {top: window.innerHeight - divMountain1.clientHeight - 20 + 'px'});
 				TweenLite.to(divMountain3, 1, {top: window.innerHeight - divMountain1.clientHeight - 20 + 'px'});
 				TweenLite.to(divMainButton, 1, {top: window.innerHeight / 3 + "px", onComplete:completeInit});
+				//获取日记列表
+				var diaryList = getDiaryList();
+				//显示日记列表
+				renderDiaryList(diaryList);
 			});
 			
 			/**
@@ -201,14 +215,25 @@
 				}
 				setMainButtonAnimationUP();
 			}
-			
-//			//跳转到detail
-//			function gotoDetail(){
-//				mui.openWindow({
-//					url: 'detail.html',
-//					id: 'detail'
-//				});
-//			}
+			/**
+			 * 获取日记列表
+			 */
+			function getDiaryList(){
+				var result = [];
+				result.push({
+					date: '2016-12-09',
+					weather: 'fine',
+					content: '为了保证扩展API的有效调用，所有应用页面都会用到的重要事件。 应用页面显示时需要首先加载扩展和API代码库，当扩展API代码库加载完成时会触发pluseready事件，当设备触发该事件后，用户就可以安全的调用扩展API。 如果程序中打开多个页面，每个都会收到此事件。',
+					image: '/assets/image/IMG_1001.JPG'
+				});
+				return result;
+			}
+			/**
+			 * 渲染日记列表
+			 */
+			function renderDiaryList(list){
+				
+			}
 		</script>
 	</body>
 
