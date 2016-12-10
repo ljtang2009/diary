@@ -7,31 +7,118 @@
 		<link rel="stylesheet" href="css/mui.min.css">
 		<title>diary</title>
 		<style>
+		
+			.svgTimelineContainer {
+				display: flex; 
+				justify-content:center; 
+				flex-wrap: wrap;
+				width: 56px;
+				height: 42px;
+			}
+		
+			.svgTimeline {
+				width: 14px;;
+			}
+		
 			/**
-			 * 隐藏滚动条
+			 * 日记内容样式
 			 */
-			body::-webkit-scrollbar{
-				display: none;
+			.divDiaryContentItem {
+			  position: relative;
+			  border-radius: 1px;
+			  height: 75px; 
+			  margin: 10px 10px 0 10px;
+			  display: flex; 
+			  padding: 6px 0 6px 6px;
+			}
+			
+			.divDiaryContentItem:after, .divDiaryContentItem:before {
+			  border: solid transparent;
+			  content: ' ';
+			  height: 0;
+			  left: -18px;
+			  position: absolute;
+			  width: 0;
+			}
+			
+			.divDiaryContentItem:after {
+			  border-width: 9px;
+			  top: 10px;
+			}
+			
+			/**
+			 * 日记文字内容样式
+			 */
+			.divDiaryContentText{
+				flex-grow: 100; 
+				width: 50px; 
+				font-size: 14px;
+			}
+			
+			/**
+			 * 日记图片的样式
+			 */
+			.divDiaryContentImg{
+				margin-right: 6px;
+			}
+			
+			.divDiaryContentImg > img{
+				max-width: 100px; 
+				height: 64px;
+			}
+			
+			.divDiaryTimelineLeft{
+				text-align: center; font-size: 12px; padding: 10px 0px 5px 10px;
+			}
+			
+			.divTimelineLineContainer {
+				width:30px; 
+				text-align: center; 
+				display: flex; 
+				flex-direction: column;
+			}
+			
+			.divTimelineLineContainer > .divTimelineLineUP {
+				border-left: 1px solid; margin-left: 15px; height: 20px;
+			}
+			
+			.divTimelineLineContainer > .divTimelineLineDown {
+				border-left: 1px solid; margin-left: 15px; flex-grow: 100;
+			}
+			
+			.divTimelineLineContainer > .divTimelineLineText {
+				height: 20px; font-size: 20px;
+			}
+			
+			.mui-table-view {
+				background-color: transparent;
+			}
+			
+			.mui-table-view:before, .mui-table-view:after{
+				background-color: transparent;
+			}
+			
+			.mui-table-view-cell {
+				padding: 0px;
+			}
+			
+			.mui-table-view-cell:after {
+				background-color: transparent;
+			}
+			
+			.mui-table-view-cell.mui-active {
+				background-color: transparent;
+			}
+			
+			.mui-table-view-cell > .mui-slider-handle {
+				background-color: transparent;
+			}
+			
+			.mui-table-view-cell > .mui-slider-right{
+				padding-top: 10px;
+				padding-bottom: 14px;
 			}
 		</style>
-		<!--<script type="text/javascript">
-			// 扩展API是否准备好，如果没有则监听“plusready"事件
-			if(window.plus) {
-				plusReady();
-			} else {
-				document.addEventListener("plusready", plusReady, false);
-			}
-			// 扩展API准备完成后要执行的操作
-			function plusReady() {
-				var ws = plus.webview.currentWebview(); //pw回车可输出plus.webview
-				// ... code
-			}
-			//打开新Webview窗口
-			function openNewWebView(){
-				var url = "http://www.dcloud.io/";
-				plus.webview.create(url).show();
-			}
-		</script>-->
 	</head>
 
 	<body>
@@ -47,10 +134,8 @@
 			</div>
 			<div id="divMainButton" style="z-index: 4; position: absolute; border-radius: 100%;">
 			</div>
-			<div id="divDiaryList" style="z-index: 5; position: absolute; width: 100%; background-color: #A7A63F;">
-				<ul style="list-style-type:none; padding: 0; margin: 0;">
-					<li style="background-color: red;">1</li>
-					<li>2</li>
+			<div id="divDiaryList" style="z-index: 5; position: relative; margin-top: 0px; width: 100%; padding-bottom: 10px;">
+				<ul id="ulDairyList" style="list-style-type:none; padding: 0; margin: 0;" class="mui-table-view">
 				</ul>
 			</div>
 		</div>
@@ -58,11 +143,48 @@
 		<script src="js/utility.js"></script>
 		<script src="lib/greensock/TweenLite.min.js"></script>
 		<script src="lib/greensock/plugins/CSSPlugin.min.js"></script>
+		<script src="lib/greensock/plugins/ScrollToPlugin.min.js"></script>
+		<script src="lib/clamp/clamp.min.js"></script>
+		<script src="lib/handlebars/handlebars.min.js"></script>
+		<script src="lib/moment/moment.min.js"></script>
+		<script id="diaryItemTempte" type="text/x-handlebars-template">
+			<div class="mui-slider-right mui-disabled">
+				<a class="mui-btn mui-btn-red mui-icon mui-icon-trash"></a>
+			</div>
+			<div style="display: flex;" class="mui-slider-handle">
+				<div class="divDiaryTimelineLeft">
+					<div>{{yearMonth}}</div>
+					<div>{{dayOfWeekChinese}}</div>
+					<div class="svgTimelineContainer">
+						<div><embed name='svg' src="image/weather/{{weather}}.svg" onload="changSvgColor(this);" class="svgTimeline" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/"></embed></div>
+						{{# if expression}}<div><embed name='svgTimeline' onload="changSvgColor(this);" src="image/expression/{{expression}}.svg" class="svgTimeline" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/"></embed></div>{{/if}}
+						{{# if hasPicture}}<div><embed name='svgTimeline' onload="changSvgColor(this);" src="image/fileIcon/picture.svg" class="svgTimeline" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/"></embed></div>{{/if}}
+						{{# if hasAudio}}<div><embed name='svgTimeline' onload="changSvgColor(this);" src="image/fileIcon/audio.svg" class="svgTimeline" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/"></embed></div>{{/if}}
+						{{# if hasVideo}}<div><embed name='svgTimeline' onload="changSvgColor(this);" src="image/fileIcon/video.svg" class="svgTimeline" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/"></embed></div>{{/if}}
+					</div>
+				</div>
+				<div class="divTimelineLineContainer">
+					<div class="divTimelineLineUP" style="{{# if hasLast}}visibility: visible;{{~^~}}visibility: hidden;{{/if}}"></div>
+					<div class="divTimelineLineText">{{day}}</div>
+					<div class="divTimelineLineDown" style="{{# if hasNext}}visibility: visible;{{~^~}}visibility: hidden;{{/if}}"></div>
+				</div>
+				<div style="flex-grow: 100;">
+					<div class="divDiaryContentItem">
+						<div name="divDiaryText" class="divDiaryContentText">{{content}}</div>
+						<div class="divDiaryContentImg" style="{{#if hasPicture}}display: block;{{~^~}}display: none;{{/if}}"><img src="{{image}}"></div>
+					</div>
+				</div>
+			</div>
+		</script>
 		<script type="text/javascript">
 			var divMountain1 = document.getElementById("divMountain1");
 			var divMountain2 = document.getElementById("divMountain2");
 			var divMountain3 = document.getElementById("divMountain3");
 			var divMainButton = document.getElementById("divMainButton");
+			var divDiaryList = document.getElementById('divDiaryList');
+			var ulDairyList = document.getElementById('ulDairyList');
+			var sourceDiaryItem = document.getElementById('diaryItemTempte').innerHTML;
+			var templateDiaryItem = Handlebars.compile(sourceDiaryItem);
 			var divMainButtonInitTop;		//主按钮初始化后的位置
 			var divMountain1InitTop;		//山1初始化后的位置
 			var divMountain2InitTop;		//山2初始化后的位置
@@ -76,6 +198,7 @@
 			var tweenMountain1AnimationBack;		//山1回弹的动画对象
 			var tweenMountain2AnimationBack;		//山2回弹的动画对象
 			var tweenMountain3AnimationBack;		//山3回弹的动画对象
+			var isIOS = false;		//是否是ios系统
 			/**
 			 * 区分时间的样式
 			 */
@@ -146,6 +269,7 @@
 //						tweenMountain3AnimationBack = TweenLite.to(divMountain3, 1, {top: divMountain3InitTop + "px"});
 //					}
 //				}, false);
+				isIOS = plus.os.name.toLowerCase().indexOf('ios') >= 0;
 				plus.screen.lockOrientation("portrait-primary");	//锁定竖屏
 				plus.device.setWakelock(true);		//屏幕常亮
 				styleWithTime = utility.getStyleWithTime();
@@ -170,11 +294,32 @@
 				divMainButton.style.boxShadow = "0px 0px 10px 2px " + styleWithTime.mainButtonColor;
 				divMainButton.style.width = divMainButton.style.height = window.innerHeight / 5 + "px";
 				divMainButton.style.left = (window.innerWidth / 2) - (divMainButton.clientWidth / 2) + "px";
+				//内容
+				divDiaryList.style.backgroundColor = styleWithTime.timelineBgColor;
+				//箭头的背景色
+				var newStyleElement = document.createElement('style');
+				newStyleElement.innerText = ".divDiaryContentItem:after {border-right-color: " + styleWithTime.mainButtonColor + ";} ";
+				newStyleElement.innerText += ".mui-table-view-cell.mui-active>.mui-slider-handle {background-color: " + styleWithTime.timelineActiveItmeBgColor + "}";
+				document.body.appendChild(newStyleElement);
+				//滚动事件
+				window.onscroll = function (e) {
+				  console.log(window.pageYOffset);
+				}
 				//初始化的位置
-				TweenLite.to(divMountain1, 0.5, {top: window.innerHeight - divMountain1.clientHeight + 'px'});
-				TweenLite.to(divMountain2, 0.8, {top: window.innerHeight - divMountain1.clientHeight - 20 + 'px'});
-				TweenLite.to(divMountain3, 1, {top: window.innerHeight - divMountain1.clientHeight - 20 + 'px'});
-				TweenLite.to(divMainButton, 1, {top: window.innerHeight / 3 + "px", onComplete:completeInit});
+				//ios上有动画
+				if (isIOS){
+					TweenLite.to(divMountain1, 0.5, {top: window.innerHeight - divMountain1.clientHeight / 1.2 + 'px'});
+					TweenLite.to(divMountain2, 0.8, {top: window.innerHeight - divMountain1.clientHeight / 1.2 - 20 + 'px'});
+					TweenLite.to(divMountain3, 1, {top: window.innerHeight - divMountain1.clientHeight / 1.2 - 20 + 'px'});
+					TweenLite.to(divMainButton, 1, {top: window.innerHeight / 3 + "px", onComplete:completeInit});
+				}
+				else {
+					divMountain1.style.top = window.innerHeight - divMountain1.clientHeight / 1.2 + 'px';
+					divMountain2.style.top = window.innerHeight - divMountain1.clientHeight / 1.2 - 20 + 'px';
+					divMountain3.style.top = window.innerHeight - divMountain1.clientHeight / 1.2 - 20 + 'px';
+					divMainButton.style.top = window.innerHeight / 3 + "px";
+					completeInit();
+				}
 				//获取日记列表
 				var diaryList = getDiaryList();
 				//显示日记列表
@@ -200,7 +345,7 @@
 				//升起
 				function setMainButtonAnimationUP(){
 					tweenAnimationUP = TweenLite.to(divMainButton, 2, {
-						top: divMainButtonInitTop - 8 + "px", 
+						top: divMainButtonInitTop - 12 + "px", 
 						boxShadow: "0px 0px 0px 0px " + styleWithTime.mainButtonColor,
 						onComplete: setMainButtonAnimationDown,
 					});
@@ -208,8 +353,8 @@
 				//下降
 				function setMainButtonAnimationDown(){
 					tweenAnimationDown = TweenLite.to(divMainButton, 2, {
-						top: divMainButtonInitTop + 8 + "px",
-						boxShadow: "0px 0px 10px 3px " + styleWithTime.mainButtonColor,
+						top: divMainButtonInitTop + 12 + "px",
+						boxShadow: "0px 0px 20px 8px " + styleWithTime.mainButtonColor,
 						onComplete: setMainButtonAnimationUP
 					});
 				}
@@ -224,7 +369,60 @@
 					date: '2016-12-09',
 					weather: 'fine',
 					content: '为了保证扩展API的有效调用，所有应用页面都会用到的重要事件。 应用页面显示时需要首先加载扩展和API代码库，当扩展API代码库加载完成时会触发pluseready事件，当设备触发该事件后，用户就可以安全的调用扩展API。 如果程序中打开多个页面，每个都会收到此事件。',
-					image: '/assets/image/IMG_1001.JPG'
+					image: 'assets/image/IMG_1001.JPG',
+					expression: 'happy',
+					hasPicture: true,
+					hasAudio: true,
+					hasVideo: true,
+					hasLast: false,
+					hasNext: true
+				});
+				result.push({
+					date: '2016-12-09',
+					weather: 'rain',
+					content: '为了保证扩展API的有效调用，所有应用页面都会用到的重要事件。 应用页面显示时需要首先加载扩展和API代码库，当扩展API代码库加载完成时会触发pluseready事件，当设备触发该事件后，用户就可以安全的调用扩展API。 如果程序中打开多个页面，每个都会收到此事件。',
+					image: 'assets/image/IMG_1001.JPG',
+					expression: 'anger',
+					hasPicture: true,
+					hasAudio: false,
+					hasVideo: false,
+					hasLast: true,
+					hasNext: true
+				});
+				result.push({
+					date: '2016-12-09',
+					weather: 'rain',
+					content: '为了保证扩展API的有效调用，所有应用页面都会用到的重要事件。 应用页面显示时需要首先加载扩展和API代码库，当扩展API代码库加载完成时会触发pluseready事件，当设备触发该事件后，用户就可以安全的调用扩展API。 如果程序中打开多个页面，每个都会收到此事件。',
+					image: 'assets/image/IMG_1001.JPG',
+					expression: 'anger',
+					hasPicture: true,
+					hasAudio: false,
+					hasVideo: false,
+					hasLast: true,
+					hasNext: true
+				});
+				result.push({
+					date: '2016-12-09',
+					weather: 'rain',
+					content: '为了保证扩展API的有效调用，所有应用页面都会用到的重要事件。 应用页面显示时需要首先加载扩展和API代码库，当扩展API代码库加载完成时会触发pluseready事件，当设备触发该事件后，用户就可以安全的调用扩展API。 如果程序中打开多个页面，每个都会收到此事件。',
+					image: 'assets/image/IMG_1001.JPG',
+					expression: 'anger',
+					hasPicture: true,
+					hasAudio: false,
+					hasVideo: false,
+					hasLast: true,
+					hasNext: true
+				});
+				result.push({
+					date: '2016-12-09',
+					weather: 'cloudy',
+					content: '为了保证扩展API的有效调用，所有应用页面都会用到的重要事件。 应用页面显示时需要首先加载扩展和API代码库，当扩展API代码库加载完成时会触发pluseready事件，当设备触发该事件后，用户就可以安全的调用扩展API。 如果程序中打开多个页面，每个都会收到此事件。',
+					expression: 'cry',
+					hasPicture: false,
+					hasAudio: true,
+					hasVideo: true,
+					hasLast: true,
+					hasNext: false
 				});
 				return result;
 			}
@@ -232,7 +430,77 @@
 			 * 渲染日记列表
 			 */
 			function renderDiaryList(list){
-				
+				for(var i = 0; i < list.length; i++){
+					renderDiaryItem(list[i]);
+				}
+				//如果有diary,就显示第一个
+				if (list.length > 0){
+					var scrollHeight = 0;
+					if (list.length == 1){
+						scrollHeight = 100;
+					}
+					else {
+						scrollHeight = 150;
+					}
+					TweenLite.to(window, 1, {scrollTo:scrollHeight});
+				}
+			}
+			
+			/**
+			 * @description 渲染一条日记
+			 * @param {Object} item
+			 */
+			function renderDiaryItem(item){
+				var itemDate = moment(item.date);
+				item.dayOfWeek = itemDate.weekday();
+				if (item.dayOfWeek == 0){
+					item.dayOfWeekChinese = "星期一";
+				}
+				else if (item.dayOfWeek == 1){
+					item.dayOfWeekChinese = "星期二";
+				}
+				else if (item.dayOfWeek == 2){
+					item.dayOfWeekChinese = "星期三";
+				}
+				else if (item.dayOfWeek == 3){
+					item.dayOfWeekChinese = "星期四";
+				}
+				else if (item.dayOfWeek == 4){
+					item.dayOfWeekChinese = "星期五";
+				}
+				else if (item.dayOfWeek == 5){
+					item.dayOfWeekChinese = "星期六";
+				}
+				else if (item.dayOfWeek == 6){
+					item.dayOfWeekChinese = "星期天";
+				}
+				item.yearMonth = itemDate.format("YYYY.M");
+				item.day = itemDate.format("D");
+				var html = templateDiaryItem(item);
+				var li = document.createElement("li");
+				li.innerHTML = html;
+				li.className = "mui-table-view-cell";
+				//自动显示省略号
+				var divDiaryText = li.getElementsByClassName('divDiaryContentText')[0];
+				$clamp(divDiaryText, {clamp: 3});
+				//调整颜色
+				li.getElementsByClassName('divDiaryTimelineLeft')[0].style.color = styleWithTime.mainButtonColor;
+				li.getElementsByClassName('divTimelineLineContainer')[0].style.color = styleWithTime.mainButtonColor;
+				li.getElementsByClassName('divTimelineLineContainer')[0].style.borderColor = styleWithTime.mainButtonColor;
+				li.getElementsByClassName('divTimelineLineDown')[0].style.borderColor = styleWithTime.mainButtonColor;
+				li.getElementsByClassName('divDiaryContentItem')[0].style.background = styleWithTime.mainButtonColor;
+				ulDairyList.appendChild(li);
+			}
+			
+			/**
+			 * 改变svg颜色
+			 * @param {Object} e
+			 */
+			function changSvgColor(sender){
+				utility.setSvgColor({
+					containerArray : [sender], 
+					color: styleWithTime.mainButtonColor
+				});
 			}
 		</script>
 	</body>

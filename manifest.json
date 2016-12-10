@@ -215,7 +215,29 @@
 					"image/day_mountain_3.png",
 					"lib/greensock/TimelineLite.min.js",
 					"lib/greensock/plugins/CSSPlugin.min.js",
-					"lib/greensock/TweenLite.min.js"
+					"lib/greensock/TweenLite.min.js",
+					"image/weather/晴.svg",
+					"image/weather/fine.svg",
+					"image/weather/snow.svg",
+					"image/weather/fog.svg",
+					"image/weather/rain.svg",
+					"image/weather/sand.svg",
+					"image/weather/haze.svg",
+					"image/weather/cloudy.svg",
+					"image/weather/overcast.svg",
+					"image/fileIcon/audio.svg",
+					"image/fileIcon/picture.svg",
+					"image/fileIcon/video.svg",
+					"image/expression/normal.svg",
+					"image/expression/anger.svg",
+					"image/expression/cry.svg",
+					"image/expression/happy.svg",
+					"assets/image/IMG_1001.JPG",
+					"lib/clamp/clamp.min.js",
+					"lib/handlebars/handlebars.min.js",
+					"lib/moment/moment.min.js",
+					"fonts/mui.ttf",
+					"lib/greensock/plugins/ScrollToPlugin.min.js"
 				],
 				"refer": [],
 				"priority": 0
@@ -224,7 +246,6 @@
 		"idle": {
 			"resources": [
 				"detail.html",
-				"fonts/mui.ttf",
 				"js/mui.js",
 				"css/mui.css",
 				"README.md"
