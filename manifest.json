@@ -237,7 +237,17 @@
 					"lib/handlebars/handlebars.min.js",
 					"lib/moment/moment.min.js",
 					"fonts/mui.ttf",
-					"lib/greensock/plugins/ScrollToPlugin.min.js"
+					"lib/greensock/plugins/ScrollToPlugin.min.js",
+					"style/index.css",
+					"template/indexDiaryItem.js",
+					"js/controller/indexController.js",
+					"js/view/indexView.js",
+					"lib/jquery/jquery.min.js",
+					"lib/pin/jquery.pin.min.js",
+					"image/setting.svg",
+					"image/calendar.svg",
+					"image/cloud/cloud1.png",
+					"image/cloud/cloud2.png"
 				],
 				"refer": [],
 				"priority": 0

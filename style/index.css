@@ -1,0 +1,115 @@
+.mui-bar {
+	background: transparent;
+	box-shadow: 0 0 0;
+}
+
+.svgTimelineContainer {
+	display: flex; 
+	justify-content:center; 
+	flex-wrap: wrap;
+	width: 56px;
+	height: 42px;
+}
+
+.svgTimeline {
+	width: 14px;;
+}
+
+/**
+ * 日记内容样式
+ */
+.divDiaryContentItem {
+  position: relative;
+  border-radius: 1px;
+  height: 75px; 
+  margin: 10px 10px 0 10px;
+  display: flex; 
+  padding: 6px 0 6px 6px;
+}
+
+.divDiaryContentItem:after, .divDiaryContentItem:before {
+  border: solid transparent;
+  content: ' ';
+  height: 0;
+  left: -18px;
+  position: absolute;
+  width: 0;
+}
+
+.divDiaryContentItem:after {
+  border-width: 9px;
+  top: 10px;
+}
+
+/**
+ * 日记文字内容样式
+ */
+.divDiaryContentText{
+	flex-grow: 100; 
+	width: 50px; 
+	font-size: 14px;
+}
+
+/**
+ * 日记图片的样式
+ */
+.divDiaryContentImg{
+	margin-right: 6px;
+}
+
+.divDiaryContentImg > img{
+	max-width: 100px; 
+	height: 64px;
+}
+
+.divDiaryTimelineLeft{
+	text-align: center; font-size: 12px; padding: 10px 0px 5px 10px;
+}
+
+.divTimelineLineContainer {
+	width:30px; 
+	text-align: center; 
+	display: flex; 
+	flex-direction: column;
+}
+
+.divTimelineLineContainer > .divTimelineLineUP {
+	border-left: 1px solid; margin-left: 15px; height: 20px;
+}
+
+.divTimelineLineContainer > .divTimelineLineDown {
+	border-left: 1px solid; margin-left: 15px; flex-grow: 100;
+}
+
+.divTimelineLineContainer > .divTimelineLineText {
+	height: 20px; font-size: 20px;
+}
+
+.mui-table-view {
+	background-color: transparent;
+}
+
+.mui-table-view:before, .mui-table-view:after{
+	background-color: transparent;
+}
+
+.mui-table-view-cell {
+	padding: 0px;
+}
+
+.mui-table-view-cell:after {
+	background-color: transparent;
+}
+
+.mui-table-view-cell.mui-active {
+	background-color: transparent;
+}
+
+.mui-table-view-cell > .mui-slider-handle {
+	background-color: transparent;
+}
+
+.mui-table-view-cell > .mui-slider-right{
+	padding-top: 10px;
+	padding-bottom: 14px;
+}
