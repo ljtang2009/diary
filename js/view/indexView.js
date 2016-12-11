@@ -38,16 +38,16 @@
 			var divStar1 = document.getElementById('divStar1');
 			divStar1.style.display = 'block';
 			divStar1.style.top = window.innerHeight / 6 + 'px';
-			divStar1.style.left = window.innerWidth / 4 + 'px';
+			divStar1.style.left = window.innerWidth / 7 + 'px';
 			this.setStart1Animation(divStar1);
 			var divStar2 = document.getElementById('divStar2');
 			divStar2.style.display = 'block';
-			divStar2.style.top = window.innerHeight / 1.8 + 'px';
-			divStar2.style.left = window.innerWidth / 5 + 'px';
+			divStar2.style.top = window.innerHeight / 2.2 + 'px';
+			divStar2.style.left = window.innerWidth / 4 + 'px';
 			this.setStart2Animation(divStar2);
 			var divStar3 = document.getElementById('divStar3');
 			divStar3.style.display = 'block';
-			divStar3.style.top = window.innerHeight / 2 + 'px';
+			divStar3.style.top = window.innerHeight / 4 + 'px';
 			divStar3.style.left = window.innerWidth / 1.2 + 'px';
 			this.setStart3Animation(divStar3);
 		}
@@ -56,28 +56,26 @@
 			var divCloud1 = document.getElementById('divCloud1');
 			divCloud1.style.display = 'block';
 			divCloud1.style.top = window.innerHeight / 6 + 'px';
-			divCloud1.style.left = window.innerWidth / 4 + 'px';
+			divCloud1.style.left = window.innerWidth / 1.3 + 'px';
 			this.setCloud1Animation(divCloud1);
 			var divCloud2 = document.getElementById('divCloud2');
 			divCloud2.style.display = 'block';
-			divCloud2.style.top = window.innerHeight / 1.6 + 'px';
-			divCloud2.style.left = window.innerWidth / 1.3 + 'px';
+			divCloud2.style.top = window.innerHeight / 2.3 + 'px';
+			divCloud2.style.left = window.innerWidth / 4 + 'px';
 			this.setCloud2Animation(divCloud2);
 		}
-		//固定顶部bar
-		//$('#divTopBar').pin();
+		//因为ios滚动时，主按钮会被navbar遮盖，设置z-index无用，所以只能设置这个高度
+		divMainButton.style.top = 200 + "px";
 		//ios上有动画
 		if (isIOS){
 			TweenLite.to(divMountain1, 0.5, {top: window.innerHeight - divMountain1.clientHeight / 1.2 + 'px'});
 			TweenLite.to(divMountain2, 0.8, {top: window.innerHeight - divMountain1.clientHeight / 1.2 - 20 + 'px'});
-			TweenLite.to(divMountain3, 1, {top: window.innerHeight - divMountain1.clientHeight / 1.2 - 20 + 'px'});
-			TweenLite.to(divMainButton, 1, {top: window.innerHeight / 3 + "px", onComplete:next});
+			TweenLite.to(divMountain3, 1, {top: window.innerHeight - divMountain1.clientHeight / 1.2 - 20 + 'px', onComplete:next});
 		}
 		else {
 			divMountain1.style.top = window.innerHeight - divMountain1.clientHeight / 1.2 + 'px';
 			divMountain2.style.top = window.innerHeight - divMountain1.clientHeight / 1.2 - 20 + 'px';
 			divMountain3.style.top = window.innerHeight - divMountain1.clientHeight / 1.2 - 20 + 'px';
-			divMainButton.style.top = window.innerHeight / 3 + "px";
 			next();
 		}
 	}
@@ -92,17 +90,14 @@
 		}
 		//如果有diary,就显示第一个
 		if(list.length > 0) {
-			var scrollHeight = 95;
-			if (next) {
-				TweenLite.to(window, 1, {
-					scrollTo: scrollHeight,
-					onComplete: next
-				});
+			TweenLite.to(divMountain1, 1, {top: divMountain1.offsetTop - 95 + 'px'});
+			TweenLite.to(divMountain2, 1, {top: divMountain2.offsetTop - 95 + 'px'});
+			TweenLite.to(divMountain3, 1, {top: divMountain3.offsetTop - 95 + 'px'});
+			if (next){
+				TweenLite.to(divDiaryList, 1.5, {top: divDiaryList.offsetTop - 95 + 'px', onComplete:next});
 			}
 			else {
-				TweenLite.to(window, 1, {
-					scrollTo: scrollHeight
-				});
+				TweenLite.to(divDiaryList, 1.5, {top: divDiaryList.offsetTop - 95 + 'px'});
 			}
 		}
 		else {
@@ -240,7 +235,7 @@
 	 */
 	_indexView.prototype.setCloud1Animation = function(element){
 		var _this = this;
-		tweenCloud1AnimationMove = TweenLite.to(element, 60, {
+		tweenCloud1AnimationMove = TweenLite.to(element, 1500, {
 			left: -50,
 			onComplete: function(){
 				element.style.left = window.innerWidth + 50 + 'px';
@@ -254,7 +249,7 @@
 	 */
 	_indexView.prototype.setCloud2Animation = function(element){
 		var _this = this;
-		tweenCloud2AnimationMove = TweenLite.to(element, 150, {
+		tweenCloud2AnimationMove = TweenLite.to(element, 60, {
 			left: -60,
 			onComplete: function(){
 				element.style.left = window.innerWidth + 60 + 'px';

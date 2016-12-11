@@ -10,11 +10,13 @@
 	</head>
 
 	<body>
-		<header id="header" class="mui-bar">
+		<header id="header" class="mui-bar" style="background: #004FAA;">
 			<div style="width: 100%; display: flex; justify-content: space-between;">
-				<div></div>
-				<div></div>
-				<div style="display: flex; width: 110px; justify-content: space-between;">
+				<div style="width: 100px;"></div>
+				<div>
+					<div style="position: relative; top: 44px; width: 85px; height: 40px; border-radius: 0 0 190px 190px; background: #004FAA; box-shadow: 0 2px 2px #083C6C;"></div>
+				</div>
+				<div style="display: flex; width: 100px; justify-content: space-between;">
 					<div style="padding-top: 8px; width: 50px; text-align: center;"><embed src="image/calendar.svg" onload="changSvgColor(this);" style="width: 26px;" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/"></embed></div>
 					<div style="padding-top: 8px; width: 50px; text-align: center;"><embed src="image/setting.svg" onload="changSvgColor(this);" style="width: 26px;" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/"></embed></div>
 				</div>
@@ -35,9 +37,9 @@
 			<div id="divStar3" style="width: 7px; height: 7px; border-radius: 100%; background-color: #9EBEDF; position: absolute; z-index: 5; display: none; opacity: 0.2;"></div>
 			<div id="divCloud1" style="position: absolute; z-index: 5; display: none;"><img src="image/cloud/cloud1.png" style="width: 50px;" /></div>
 			<div id="divCloud2" style="position: absolute; z-index: 5; display: none;"><img src="image/cloud/cloud2.png" style="width: 60px;" /></div>
-			<div id="divMainButton" style="z-index: 4; position: absolute; border-radius: 100%;">
+			<div id="divMainButton" style="z-index: 20; position: absolute; border-radius: 100%;">
 			</div>
-			<div id="divDiaryList" style="z-index: 5; position: relative; margin-top: 0; width: 100%; padding-bottom: 10px;">
+			<div id="divDiaryList" style="z-index: 5; position: absolute; width: 100%; padding-bottom: 10px;">
 				<ul id="ulDairyList" style="list-style-type:none; padding: 0; margin: 0;" class="mui-table-view">
 				</ul>
 			</div>
@@ -46,10 +48,11 @@
 		<script src="js/utility.js"></script>
 		<script src="lib/greensock/TweenLite.min.js"></script>
 		<script src="lib/greensock/plugins/CSSPlugin.min.js"></script>
-		<script src="lib/greensock/plugins/ScrollToPlugin.min.js"></script>
 		<script src="lib/clamp/clamp.min.js"></script>
 		<script src="lib/handlebars/handlebars.min.js"></script>
 		<script src="lib/moment/moment.min.js"></script>
+		<script src="lib/async/async.min.js"></script>
+		<script src="lib/iscroll/iscroll-lite.js"></script>
 		<script id="diaryItemTempte" type="text/x-handlebars-template">
 			<div class="mui-slider-right mui-disabled">
 				<a class="mui-btn mui-btn-red mui-icon mui-icon-trash"></a>
@@ -96,11 +99,10 @@
 			var sourceDiaryItem = document.getElementById('diaryItemTempte').innerHTML;
 			var templateDiaryItem = Handlebars.compile(sourceDiaryItem);
 			var divMainButtonInitTop; //主按钮初始化后的位置
-			var divMountain1InitTop; //山1初始化后的位置
-			var divMountain2InitTop; //山2初始化后的位置
-			var divMountain3InitTop; //山3初始化后的位置
 			var touchStartY = 0; //垂直方向拖动的起始位置
+			var touchStartPageYOffset = 0;	//拖动起始滚动条高度
 			var touchStartMainButtonTop; //主按钮拖动前的位置
+			var touchPositionArray = [];		//拖动的位置
 			var tweenAnimationUP; //向上的动画对象
 			var tweenAnimationDown; //向下的动画对象
 			var finishInit = false; //是否完成初始化
@@ -118,86 +120,137 @@
 			var tweenCloud2AnimationMove;	//cloud1移动动画
 			var styleWithTime = utility.getStyleWithTime();//区分时间的样式
 			var isNight = utility.isNight();
+			var currentWebview;		//当前webview
 			mui.init({
 				swipeBack: false, //关闭侧滑
 			});
 			mui.plusReady(function() {
-				//				//开始拖动
-				//				document.body.addEventListener('touchstart', function (event) {
-				//					if (finishInit){
-				//						//停止主按钮上下晃动的动画
-				//						if(tweenAnimationUP){
-				//							tweenAnimationUP.kill();
-				//						}
-				//						if(tweenAnimationDown){
-				//							tweenAnimationDown.kill();
-				//						}
-				//						if(tweenMainButtonAnimationBack){
-				//							tweenMainButtonAnimationBack.kill();
-				//						}
-				//						if(tweenMountain1AnimationBack){
-				//							tweenMountain1AnimationBack.kill();
-				//						}
-				//						if(tweenMountain2AnimationBack){
-				//							tweenMountain2AnimationBack.kill();
-				//						}
-				//						if(tweenMountain3AnimationBack){
-				//							tweenMountain3AnimationBack.kill();
-				//						}
-				//						//获取拖动点初始位置
-				//						touchStartY = event.changedTouches[0].pageY;
-				//						touchStartMainButtonTop = divMainButton.offsetTop;
-				//					}
-				//				}, false);
-				//				//拖动中
-				//				document.body.addEventListener('touchmove', function (event) {
-				//					if (finishInit){
-				//						//拖动百分比，正式为下拉，负数为上拉
-				//						var touch_percent = (event.changedTouches[0].pageY - touchStartY) / window.innerHeight;
-				//						if (touch_percent > 0){
-				//							divMainButton.style.top = divMainButtonInitTop + (100 * touch_percent) + 'px';
-				//							divMountain1.style.top = divMountain1InitTop + (100 * touch_percent) + 'px';
-				//							divMountain2.style.top = divMountain2InitTop + (100 * touch_percent * 0.8) + 'px';
-				//							divMountain3.style.top = divMountain3InitTop + (100 * touch_percent * 0.6) + 'px';
-				//						}
-				//						else {
-				//							divMainButton.style.top = divMainButtonInitTop + (event.changedTouches[0].pageY - touchStartY) + 'px';
-				//							divMountain1.style.top = divMountain1InitTop + (event.changedTouches[0].pageY - touchStartY) + 'px';
-				//							divMountain2.style.top = divMountain2InitTop + (event.changedTouches[0].pageY - touchStartY) + 'px';
-				//							divMountain3.style.top = divMountain3InitTop + (event.changedTouches[0].pageY - touchStartY) + 'px';
-				//						}
-				//					}
-				//					//取消拖动
-				//					event.preventDefault();
-				//				}, false);
-				//				//拖动结束
-				//				document.body.addEventListener('touchend', function (event) {
-				//					if (finishInit){
-				//						//回到原来位置
-				//						tweenMainButtonAnimationBack = TweenLite.to(divMainButton, 1, {top: divMainButtonInitTop + "px", onComplete:function(){
-				//							//开始主键动画
-				//							setMainButtonAnimation();
-				//						}});
-				//						tweenMountain1AnimationBack = TweenLite.to(divMountain1, 1, {top: divMountain1InitTop + "px"});
-				//						tweenMountain2AnimationBack = TweenLite.to(divMountain2, 1, {top: divMountain2InitTop + "px"});
-				//						tweenMountain3AnimationBack = TweenLite.to(divMountain3, 1, {top: divMountain3InitTop + "px"});
-				//					}
-				//				}, false);
+				//开始拖动
+				//因为ios上的webview滚动会阻塞js，所以用touch事件
+				document.body.addEventListener('touchstart', function (event) {
+					if (finishInit){
+//						//停止主按钮上下晃动的动画
+//						if(tweenAnimationUP){
+//							tweenAnimationUP.kill();
+//						}
+//						if(tweenAnimationDown){
+//							tweenAnimationDown.kill();
+//						}
+//						if(tweenMainButtonAnimationBack){
+//							tweenMainButtonAnimationBack.kill();
+//						}
+//						if(tweenMountain1AnimationBack){
+//							tweenMountain1AnimationBack.kill();
+//						}
+//						if(tweenMountain2AnimationBack){
+//							tweenMountain2AnimationBack.kill();
+//						}
+//						if(tweenMountain3AnimationBack){
+//							tweenMountain3AnimationBack.kill();
+//						}
+//						//获取拖动点初始位置
+						touchStartY = event.changedTouches[0].pageY;
+						touchStartPageYOffset = window.pageYOffset;
+						//清空拖动位置
+						touchPositionArray.splice(0,touchPositionArray.length);
+//						touchStartMainButtonTop = divMainButton.offsetTop;
+					}
+					event.preventDefault();
+				}, false);
+				//拖动中
+				//console.log(window.pageYOffset);
+				//console.log(window.scrollTop);
+				document.body.addEventListener('touchmove', function (event) {
+					if (finishInit){
+						//console.log(divMainButton.getBoundingClientRect().top);
+						//console.log(event.changedTouches[0].pageY );
+						//console.log(event.changedTouches[0].pageY - touchStartY);\n
+						var isShake = false;
+						var m = moment();
+						var distance = event.changedTouches[0].pageY - touchStartY;
+						//去除抖动
+						if (touchPositionArray.length > 1){
+							var lastSecondTouchPosition = touchPositionArray[touchPositionArray.length - 2];
+							//时差
+							var momentDiff = m.diff(moment(lastSecondTouchPosition.timestamp),'second');
+							
+							if (Math.abs(lastSecondTouchPosition.distance - distance) <= 5) {
+								isShake = true;
+							}
+							else {
+								console.log(lastSecondTouchPosition.distance + ";" + distance);
+							}
+						}
+						if (!isShake) {
+							touchPositionArray.push({
+								timestamp: moment().format(),
+								distance: event.changedTouches[0].pageY - touchStartY
+							});
+							//console.log(moment().format() + (event.changedTouches[0].pageY - touchStartY));
+							window.scroll(0, touchStartPageYOffset - (event.changedTouches[0].pageY - touchStartY));
+						}
+						
+						//拖动百分比，正式为下拉，负数为上拉
+//						var touch_percent = (event.changedTouches[0].pageY - touchStartY) / window.innerHeight;
+//						if (touch_percent > 0){
+//							divMainButton.style.top = divMainButtonInitTop + (100 * touch_percent) + 'px';
+//							divMountain1.style.top = divMountain1InitTop + (100 * touch_percent) + 'px';
+//							divMountain2.style.top = divMountain2InitTop + (100 * touch_percent * 0.8) + 'px';
+//							divMountain3.style.top = divMountain3InitTop + (100 * touch_percent * 0.6) + 'px';
+//						}
+//						else {
+//							divMainButton.style.top = divMainButtonInitTop + (event.changedTouches[0].pageY - touchStartY) + 'px';
+//							divMountain1.style.top = divMountain1InitTop + (event.changedTouches[0].pageY - touchStartY) + 'px';
+//							divMountain2.style.top = divMountain2InitTop + (event.changedTouches[0].pageY - touchStartY) + 'px';
+//							divMountain3.style.top = divMountain3InitTop + (event.changedTouches[0].pageY - touchStartY) + 'px';
+//						}
+					}
+					event.preventDefault();
+				}, false);
+//				//拖动结束
+//				document.body.addEventListener('touchend', function (event) {
+//					if (finishInit){
+//						//回到原来位置
+//						tweenMainButtonAnimationBack = TweenLite.to(divMainButton, 1, {top: divMainButtonInitTop + "px", onComplete:function(){
+//							//开始主键动画
+//							setMainButtonAnimation();
+//						}});
+//						tweenMountain1AnimationBack = TweenLite.to(divMountain1, 1, {top: divMountain1InitTop + "px"});
+//						tweenMountain2AnimationBack = TweenLite.to(divMountain2, 1, {top: divMountain2InitTop + "px"});
+//						tweenMountain3AnimationBack = TweenLite.to(divMountain3, 1, {top: divMountain3InitTop + "px"});
+//					}
+//				}, false);
 				isIOS = plus.os.name.toLowerCase().indexOf('ios') >= 0;
 				plus.screen.lockOrientation("portrait-primary"); //锁定竖屏
 				plus.device.setWakelock(true); //屏幕常亮
+				currentWebview = plus.webview.currentWebview();
+				currentWebview.setStyle({"scrollIndicator":"none"});		//隐藏webview的滚动条
+				var funs = [];
 				//初始化样式
-				indexView.initStyle(function() {
-					//滚动事件
-					window.onscroll = function(e) {
-						//console.log(window.pageYOffset);
-					}
+				funs.push(function(cb){
+					indexView.initStyle(function() {
+						cb(null,null);
+					});
+				});
+				//获取并渲染数据
+				funs.push(function(n,cb){
 					//获取日记列表
 					var diaryList = getDiaryList();
 					//显示日记列表
-					indexView.renderDiaryList(diaryList);
+					indexView.renderDiaryList(diaryList,function(){
+						cb(null,null);
+					});
+				});
+				//添加事件
+				funs.push(function(n,cb){
+					window.onscroll = function(){
+						//console.log(divMainButton.getBoundingClientRect().top);
+					};
+//					var wrapper = document.getElementsByTagName('body')[0];
+//					var myScroll = new IScroll(wrapper);
 					completeInit(); //完成初始化
 				});
+				async.waterfall(funs,function(err,data){});
 			});
 
 			/**
@@ -206,9 +259,6 @@
 			function completeInit() {
 				finishInit = true;
 				indexView.setMainButtonAnimation();
-				divMountain1InitTop = divMountain1.offsetTop;
-				divMountain2InitTop = divMountain2.offsetTop;
-				divMountain3InitTop = divMountain3.offsetTop;
 			}
 
 			/**

@@ -247,7 +247,9 @@
 					"image/setting.svg",
 					"image/calendar.svg",
 					"image/cloud/cloud1.png",
-					"image/cloud/cloud2.png"
+					"image/cloud/cloud2.png",
+					"lib/async/async.min.js",
+					"lib/iscroll/iscroll-lite.js"
 				],
 				"refer": [],
 				"priority": 0
