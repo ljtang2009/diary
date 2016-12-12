@@ -11,7 +11,7 @@
 		divGB.style.background = styleWithTime.bg;
 		//moutain1
 		divMountain1.style.backgroundImage = "url(image/" + styleWithTime.mountain1 + ")";
-		divMountain1.style.height = divMountain1.clientWidth * 0.4 + 'px';
+		divMountain1.style.height = divMountain1.clientWidth * 0.3 + 'px';
 		divMountain1.style.top = window.innerHeight + 'px';
 		//mountain2
 		divMountain2.style.backgroundImage = "url(image/" + styleWithTime.mountain2 + ")";
@@ -26,6 +26,8 @@
 		divMainButton.style.boxShadow = "0px 0px 10px 2px " + styleWithTime.mainButtonColor;
 		divMainButton.style.width = divMainButton.style.height = window.innerHeight / 5 + "px";
 		divMainButton.style.left = (window.innerWidth / 2) - (divMainButton.clientWidth / 2) + "px";
+		divTopMainButton.style.backgroundColor = styleWithTime.mainButtonColor;
+		divTopMainButton.style.boxShadow = "0px 0px 10px 2px " + styleWithTime.mainButtonColor;
 		//内容
 		divDiaryList.style.backgroundColor = styleWithTime.timelineBgColor;
 		//箭头的背景色
@@ -67,16 +69,16 @@
 		//因为ios滚动时，主按钮会被navbar遮盖，设置z-index无用，所以只能设置这个高度
 		//ios上有动画
 		if (isIOS){
-			TweenLite.to(divMountain1, 0.3, {top: window.innerHeight - divMountain1.clientHeight / 1.2 + 'px'});
-			TweenLite.to(divMountain2, 0.4, {top: window.innerHeight - divMountain1.clientHeight / 1.2 - 20 + 'px'});
-			TweenLite.to(divMountain3, 0.5, {top: window.innerHeight - divMountain1.clientHeight / 1.2 - 20 + 'px'});
+			TweenLite.to(divMountain1, 0.3, {top: window.innerHeight - divMountain1.clientHeight + 'px'});
+			TweenLite.to(divMountain2, 0.4, {top: window.innerHeight - divMountain1.clientHeight * 1.4 + 'px'});
+			TweenLite.to(divMountain3, 0.5, {top: window.innerHeight - divMountain1.clientHeight * 1.4 + 'px'});
 			TweenLite.to(divMainButton, 0.6, {top: window.innerHeight / 3 + 'px', onComplete:next});
 			
 		}
 		else {
-			divMountain1.style.top = window.innerHeight - divMountain1.clientHeight / 1.2 + 'px';
-			divMountain2.style.top = window.innerHeight - divMountain1.clientHeight / 1.2 - 20 + 'px';
-			divMountain3.style.top = window.innerHeight - divMountain1.clientHeight / 1.2 - 20 + 'px';
+			divMountain1.style.top = window.innerHeight - divMountain1.clientHeight + 'px';
+			divMountain2.style.top = window.innerHeight - divMountain1.clientHeight * 1.4 + 'px';
+			divMountain3.style.top = window.innerHeight - divMountain1.clientHeight * 1.4 + 'px';
 			divMainButton.style.top = window.innerHeight / 3 + 'px';
 			next();
 		}
@@ -87,6 +89,9 @@
 	 * @param {Function} next
 	 */
 	_indexView.prototype.renderDiaryList = function(list,next){
+		if (list.length > 0){
+			divDiaryList.style.display = 'block';
+		}
 		for(var i = 0; i < list.length; i++) {
 			this.renderDiaryItem(list[i]);
 		}
@@ -164,23 +169,39 @@
 	 */
 	_indexView.prototype.setMainButtonAnimation = function(){
 		divMainButtonInitTop = divMainButton.offsetTop;
+		divTopMainButtonInitTop = parseInt(divTopMainButton.style.top.substring(0, divTopMainButton.style.top.length - 2));
 		//升起
 		function setMainButtonAnimationUP() {
-			tweenAnimationUP = TweenLite.to(divMainButton, 2, {
-				top: divMainButtonInitTop - 12 + "px",
+			tweenMainButtonAnimationUP = TweenLite.to(divMainButton, 2, {
+				top: divMainButtonInitTop - 4 + "px",
 				boxShadow: "0px 0px 0px 0px " + styleWithTime.mainButtonColor,
 				onComplete: setMainButtonAnimationDown,
 			});
 		}
+		function setTopMainButtonAnimationUP() {
+			tweenTopMainButtonAnimationUP = TweenLite.to(divTopMainButton, 2, {
+				top: divTopMainButtonInitTop - 4 + "px",
+				boxShadow: "0px 0px 0px 0px " + styleWithTime.mainButtonColor,
+				onComplete: setTopMainButtonAnimationDown,
+			});
+		}
 		//下降
 		function setMainButtonAnimationDown() {
-			tweenAnimationDown = TweenLite.to(divMainButton, 2, {
-				top: divMainButtonInitTop + 12 + "px",
-				boxShadow: "0px 0px 20px 8px " + styleWithTime.mainButtonColor,
+			tweenMainButtonAnimationDown = TweenLite.to(divMainButton, 2, {
+				top: divMainButtonInitTop + 4 + "px",
+				boxShadow: "0px 0px 10px 2px " + styleWithTime.mainButtonColor,
 				onComplete: setMainButtonAnimationUP
 			});
 		}
+		function setTopMainButtonAnimationDown() {
+			tweenTopMainButtonAnimationDown = TweenLite.to(divTopMainButton, 2, {
+				top: divTopMainButtonInitTop + 4 + "px",
+				boxShadow: "0px 0px 10px 2px " + styleWithTime.mainButtonColor,
+				onComplete: setTopMainButtonAnimationUP
+			});
+		}
 		setMainButtonAnimationUP();
+		setTopMainButtonAnimationUP();
 	}
 	/**
 	 * 设置star1动画

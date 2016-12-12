@@ -27,6 +27,8 @@
 			result.mainButtonColor = "#9EBEDF";				//主按钮颜色
 			result.timelineBgColor = "#0C2A38";			//时间轴背景色
 			result.timelineActiveItmeBgColor = "#0B4B7E";		//时间轴当前选中的背景色
+			result.topBarBg = "0,79,170";		//顶栏背景色
+			result.topBarBorder = "8,60,108";	//顶栏边框
 		}
 		else {
 			result.bg = "linear-gradient(to bottom, #FEDE84, #FCE8B4)";
@@ -36,7 +38,8 @@
 			result.mainButtonColor = "#FFF2CF";
 			result.timelineBgColor = "#A7A63F";
 			result.timelineActiveItmeBgColor = "#EABB38";
-			
+			result.topBarBg = "252,193,100";
+			result.topBarBorder = "209,155,16";
 		}
 		return result;
 	}
