@@ -37,12 +37,12 @@
 		if (isNight){
 			var divStar1 = document.getElementById('divStar1');
 			divStar1.style.display = 'block';
-			divStar1.style.top = window.innerHeight / 6 + 'px';
+			divStar1.style.top = window.innerHeight / 5 + 'px';
 			divStar1.style.left = window.innerWidth / 7 + 'px';
 			this.setStart1Animation(divStar1);
 			var divStar2 = document.getElementById('divStar2');
 			divStar2.style.display = 'block';
-			divStar2.style.top = window.innerHeight / 2.2 + 'px';
+			divStar2.style.top = window.innerHeight / 1.8 + 'px';
 			divStar2.style.left = window.innerWidth / 4 + 'px';
 			this.setStart2Animation(divStar2);
 			var divStar3 = document.getElementById('divStar3');
@@ -55,27 +55,29 @@
 			//显示云
 			var divCloud1 = document.getElementById('divCloud1');
 			divCloud1.style.display = 'block';
-			divCloud1.style.top = window.innerHeight / 6 + 'px';
+			divCloud1.style.top = window.innerHeight / 4 + 'px';
 			divCloud1.style.left = window.innerWidth / 1.3 + 'px';
 			this.setCloud1Animation(divCloud1);
 			var divCloud2 = document.getElementById('divCloud2');
 			divCloud2.style.display = 'block';
-			divCloud2.style.top = window.innerHeight / 2.3 + 'px';
+			divCloud2.style.top = window.innerHeight / 1.9 + 'px';
 			divCloud2.style.left = window.innerWidth / 4 + 'px';
 			this.setCloud2Animation(divCloud2);
 		}
 		//因为ios滚动时，主按钮会被navbar遮盖，设置z-index无用，所以只能设置这个高度
-		divMainButton.style.top = 200 + "px";
 		//ios上有动画
 		if (isIOS){
-			TweenLite.to(divMountain1, 0.5, {top: window.innerHeight - divMountain1.clientHeight / 1.2 + 'px'});
-			TweenLite.to(divMountain2, 0.8, {top: window.innerHeight - divMountain1.clientHeight / 1.2 - 20 + 'px'});
-			TweenLite.to(divMountain3, 1, {top: window.innerHeight - divMountain1.clientHeight / 1.2 - 20 + 'px', onComplete:next});
+			TweenLite.to(divMountain1, 0.3, {top: window.innerHeight - divMountain1.clientHeight / 1.2 + 'px'});
+			TweenLite.to(divMountain2, 0.4, {top: window.innerHeight - divMountain1.clientHeight / 1.2 - 20 + 'px'});
+			TweenLite.to(divMountain3, 0.5, {top: window.innerHeight - divMountain1.clientHeight / 1.2 - 20 + 'px'});
+			TweenLite.to(divMainButton, 0.6, {top: window.innerHeight / 3 + 'px', onComplete:next});
+			
 		}
 		else {
 			divMountain1.style.top = window.innerHeight - divMountain1.clientHeight / 1.2 + 'px';
 			divMountain2.style.top = window.innerHeight - divMountain1.clientHeight / 1.2 - 20 + 'px';
 			divMountain3.style.top = window.innerHeight - divMountain1.clientHeight / 1.2 - 20 + 'px';
+			divMainButton.style.top = window.innerHeight / 3 + 'px';
 			next();
 		}
 	}
@@ -90,14 +92,25 @@
 		}
 		//如果有diary,就显示第一个
 		if(list.length > 0) {
-			TweenLite.to(divMountain1, 1, {top: divMountain1.offsetTop - 95 + 'px'});
-			TweenLite.to(divMountain2, 1, {top: divMountain2.offsetTop - 95 + 'px'});
-			TweenLite.to(divMountain3, 1, {top: divMountain3.offsetTop - 95 + 'px'});
-			if (next){
-				TweenLite.to(divDiaryList, 1.5, {top: divDiaryList.offsetTop - 95 + 'px', onComplete:next});
+			if (isIOS){
+				TweenLite.to(divMountain1, 0.4, {top: divMountain1.offsetTop - 95 + 'px'});
+				TweenLite.to(divMountain2, 0.4, {top: divMountain2.offsetTop - 95 + 'px'});
+				TweenLite.to(divMountain3, 0.4, {top: divMountain3.offsetTop - 95 + 'px'});
+				if (next){
+					TweenLite.to(divDiaryList, 0.4, {top: divDiaryList.offsetTop - 100 + 'px', onComplete:next});
+				}
+				else {
+					TweenLite.to(divDiaryList, 0.4, {top: divDiaryList.offsetTop - 100 + 'px'});
+				}
 			}
 			else {
-				TweenLite.to(divDiaryList, 1.5, {top: divDiaryList.offsetTop - 95 + 'px'});
+				if (next){
+					divMountain1.style.top = divMountain1.offsetTop - 95 + 'px';
+					divMountain2.style.top = divMountain2.offsetTop - 95 + 'px';
+					divMountain3.style.top = divMountain3.offsetTop - 95 + 'px';
+					divDiaryList.style.top = divDiaryList.offsetTop - 100 + 'px';
+					next();	
+				}
 			}
 		}
 		else {
@@ -195,14 +208,14 @@
 	_indexView.prototype.setStart2Animation = function(element){
 		//升起
 		function setStar2AnimationShow() {
-			tweenStar2AnimationShow = TweenLite.to(element, 2, {
+			tweenStar2AnimationShow = TweenLite.to(element, 2.8, {
 				opacity: 1,
 				onComplete: setStar2AnimationHide,
 			});
 		}
 		//下降
 		function setStar2AnimationHide() {
-			tweenStar2AnimationHide = TweenLite.to(element, 2, {
+			tweenStar2AnimationHide = TweenLite.to(element, 2.8, {
 				opacity: 0.1,
 				onComplete: setStar2AnimationShow
 			});

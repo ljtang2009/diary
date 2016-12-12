@@ -23,7 +23,6 @@
 			</div>
 		</header>
 		<div class="mui-content">
-			<!--<a href="#" onclick="gotoDetail();">测试</a>-->
 			<div id="divGB" style="z-index: 0; width: 100%;">
 			</div>
 			<div id="divMountain3" style="z-index: 1; width: 60%; position: absolute; right: 0px; background-repeat: no-repeat; background-size: 100% 100%;">
@@ -48,11 +47,12 @@
 		<script src="js/utility.js"></script>
 		<script src="lib/greensock/TweenLite.min.js"></script>
 		<script src="lib/greensock/plugins/CSSPlugin.min.js"></script>
+		<script src="lib/greensock/plugins/ScrollToPlugin.min.js"></script>
 		<script src="lib/clamp/clamp.min.js"></script>
 		<script src="lib/handlebars/handlebars.min.js"></script>
 		<script src="lib/moment/moment.min.js"></script>
 		<script src="lib/async/async.min.js"></script>
-		<script src="lib/iscroll/iscroll-lite.js"></script>
+		<script src="lib/jquery/jquery.min.js"></script>
 		<script id="diaryItemTempte" type="text/x-handlebars-template">
 			<div class="mui-slider-right mui-disabled">
 				<a class="mui-btn mui-btn-red mui-icon mui-icon-trash"></a>
@@ -103,6 +103,8 @@
 			var touchStartPageYOffset = 0;	//拖动起始滚动条高度
 			var touchStartMainButtonTop; //主按钮拖动前的位置
 			var touchPositionArray = [];		//拖动的位置
+			var touchLastMovePosition = 0;		//拖动的最后位置
+			var touchMoveAnimation;		//滚动动画
 			var tweenAnimationUP; //向上的动画对象
 			var tweenAnimationDown; //向下的动画对象
 			var finishInit = false; //是否完成初始化
@@ -121,6 +123,7 @@
 			var styleWithTime = utility.getStyleWithTime();//区分时间的样式
 			var isNight = utility.isNight();
 			var currentWebview;		//当前webview
+			var isIOS = false;		//是否是IOS
 			mui.init({
 				swipeBack: false, //关闭侧滑
 			});
@@ -129,97 +132,119 @@
 				//因为ios上的webview滚动会阻塞js，所以用touch事件
 				document.body.addEventListener('touchstart', function (event) {
 					if (finishInit){
-//						//停止主按钮上下晃动的动画
-//						if(tweenAnimationUP){
-//							tweenAnimationUP.kill();
-//						}
-//						if(tweenAnimationDown){
-//							tweenAnimationDown.kill();
-//						}
-//						if(tweenMainButtonAnimationBack){
-//							tweenMainButtonAnimationBack.kill();
-//						}
-//						if(tweenMountain1AnimationBack){
-//							tweenMountain1AnimationBack.kill();
-//						}
-//						if(tweenMountain2AnimationBack){
-//							tweenMountain2AnimationBack.kill();
-//						}
-//						if(tweenMountain3AnimationBack){
-//							tweenMountain3AnimationBack.kill();
-//						}
-//						//获取拖动点初始位置
-						touchStartY = event.changedTouches[0].pageY;
-						touchStartPageYOffset = window.pageYOffset;
-						//清空拖动位置
-						touchPositionArray.splice(0,touchPositionArray.length);
-//						touchStartMainButtonTop = divMainButton.offsetTop;
+						if (isIOS){
+	//						//停止主按钮上下晃动的动画
+	//						if(tweenAnimationUP){
+	//							tweenAnimationUP.kill();
+	//						}
+	//						if(tweenAnimationDown){
+	//							tweenAnimationDown.kill();
+	//						}
+	//						if(tweenMainButtonAnimationBack){
+	//							tweenMainButtonAnimationBack.kill();
+	//						}
+	//						if(tweenMountain1AnimationBack){
+	//							tweenMountain1AnimationBack.kill();
+	//						}
+	//						if(tweenMountain2AnimationBack){
+	//							tweenMountain2AnimationBack.kill();
+	//						}
+	//						if(tweenMountain3AnimationBack){
+	//							tweenMountain3AnimationBack.kill();
+	//						}
+	//						//获取拖动点初始位置
+							touchStartY = event.changedTouches[0].clientY;
+							touchStartPageYOffset = window.pageYOffset;
+							//清空拖动位置
+							touchPositionArray.splice(0,touchPositionArray.length);
+							//停止滚动动画
+							if (touchMoveAnimation){
+								touchMoveAnimation.kill();
+							}
+	//						touchStartMainButtonTop = divMainButton.offsetTop;
+							event.preventDefault();
+						}
 					}
-					event.preventDefault();
+					else {
+						event.preventDefault();
+					}
 				}, false);
 				//拖动中
-				//console.log(window.pageYOffset);
-				//console.log(window.scrollTop);
 				document.body.addEventListener('touchmove', function (event) {
 					if (finishInit){
-						//console.log(divMainButton.getBoundingClientRect().top);
-						//console.log(event.changedTouches[0].pageY );
-						//console.log(event.changedTouches[0].pageY - touchStartY);\n
-						var isShake = false;
-						var m = moment();
-						var distance = event.changedTouches[0].pageY - touchStartY;
-						//去除抖动
-						if (touchPositionArray.length > 1){
-							var lastSecondTouchPosition = touchPositionArray[touchPositionArray.length - 2];
-							//时差
-							var momentDiff = m.diff(moment(lastSecondTouchPosition.timestamp),'second');
-							
-							if (Math.abs(lastSecondTouchPosition.distance - distance) <= 5) {
-								isShake = true;
+						if (isIOS){
+							touchLastMovePosition = event.changedTouches[0].clientY;
+							var distance = event.changedTouches[0].clientY - touchStartY;
+							var toScrollY = touchStartPageYOffset - distance;
+							if (toScrollY < 0){
+								toScrollY = 0;
 							}
-							else {
-								console.log(lastSecondTouchPosition.distance + ";" + distance);
+							else if (toScrollY > document.body.scrollHeight){
+								toScrollY = document.body.scrollHeight;
 							}
-						}
-						if (!isShake) {
+							window.scroll(0, toScrollY);
 							touchPositionArray.push({
-								timestamp: moment().format(),
-								distance: event.changedTouches[0].pageY - touchStartY
+								timestamp: moment().format("YYYY-MM-DD HH:mm:ss.SSS"),
+								distance: distance
 							});
-							//console.log(moment().format() + (event.changedTouches[0].pageY - touchStartY));
-							window.scroll(0, touchStartPageYOffset - (event.changedTouches[0].pageY - touchStartY));
+							//拖动百分比，正式为下拉，负数为上拉
+	//						var touch_percent = (event.changedTouches[0].pageY - touchStartY) / window.innerHeight;
+	//						if (touch_percent > 0){
+	//							divMainButton.style.top = divMainButtonInitTop + (100 * touch_percent) + 'px';
+	//							divMountain1.style.top = divMountain1InitTop + (100 * touch_percent) + 'px';
+	//							divMountain2.style.top = divMountain2InitTop + (100 * touch_percent * 0.8) + 'px';
+	//							divMountain3.style.top = divMountain3InitTop + (100 * touch_percent * 0.6) + 'px';
+	//						}
+	//						else {
+	//							divMainButton.style.top = divMainButtonInitTop + (event.changedTouches[0].pageY - touchStartY) + 'px';
+	//							divMountain1.style.top = divMountain1InitTop + (event.changedTouches[0].pageY - touchStartY) + 'px';
+	//							divMountain2.style.top = divMountain2InitTop + (event.changedTouches[0].pageY - touchStartY) + 'px';
+	//							divMountain3.style.top = divMountain3InitTop + (event.changedTouches[0].pageY - touchStartY) + 'px';
+	//						}
+							event.preventDefault();
 						}
-						
-						//拖动百分比，正式为下拉，负数为上拉
-//						var touch_percent = (event.changedTouches[0].pageY - touchStartY) / window.innerHeight;
-//						if (touch_percent > 0){
-//							divMainButton.style.top = divMainButtonInitTop + (100 * touch_percent) + 'px';
-//							divMountain1.style.top = divMountain1InitTop + (100 * touch_percent) + 'px';
-//							divMountain2.style.top = divMountain2InitTop + (100 * touch_percent * 0.8) + 'px';
-//							divMountain3.style.top = divMountain3InitTop + (100 * touch_percent * 0.6) + 'px';
-//						}
-//						else {
-//							divMainButton.style.top = divMainButtonInitTop + (event.changedTouches[0].pageY - touchStartY) + 'px';
-//							divMountain1.style.top = divMountain1InitTop + (event.changedTouches[0].pageY - touchStartY) + 'px';
-//							divMountain2.style.top = divMountain2InitTop + (event.changedTouches[0].pageY - touchStartY) + 'px';
-//							divMountain3.style.top = divMountain3InitTop + (event.changedTouches[0].pageY - touchStartY) + 'px';
-//						}
 					}
-					event.preventDefault();
+					else {
+						event.preventDefault();
+					}
 				}, false);
-//				//拖动结束
-//				document.body.addEventListener('touchend', function (event) {
-//					if (finishInit){
-//						//回到原来位置
-//						tweenMainButtonAnimationBack = TweenLite.to(divMainButton, 1, {top: divMainButtonInitTop + "px", onComplete:function(){
-//							//开始主键动画
-//							setMainButtonAnimation();
-//						}});
-//						tweenMountain1AnimationBack = TweenLite.to(divMountain1, 1, {top: divMountain1InitTop + "px"});
-//						tweenMountain2AnimationBack = TweenLite.to(divMountain2, 1, {top: divMountain2InitTop + "px"});
-//						tweenMountain3AnimationBack = TweenLite.to(divMountain3, 1, {top: divMountain3InitTop + "px"});
-//					}
-//				}, false);
+				//拖动结束
+				document.body.addEventListener('touchend', function (event) {
+					if (finishInit){
+						if (isIOS) {
+							//添加惯性效果
+							if (touchPositionArray.length > 1){
+								var endTouchPosition = touchPositionArray[touchPositionArray.length - 1];
+								var lastTouchPosition;
+								var endMoment = moment(endTouchPosition.timestamp);
+								//获取42ms前的
+								for(var i = touchPositionArray.length - 2; i > -1; i--){
+									var lastMoment = moment(touchPositionArray[i].timestamp);
+									if (endMoment.diff(lastMoment) <= 42){
+										lastTouchPosition = touchPositionArray[i];
+									}
+								}
+								var distanceDiff = endTouchPosition.distance - lastTouchPosition.distance;	//最后拖动的距离
+								distanceDiff = distanceDiff * 9;	//倍数越大，运动越远
+								var toMoveDistance = window.pageYOffset - distanceDiff;
+								var toMoveTime = Math.abs(distanceDiff) / 500;	//倍数越大,滚动时间越短
+								touchMoveAnimation = TweenLite.to(window, toMoveTime, {scrollTo: window.pageYOffset - distanceDiff, ease:Power4.easeOut});
+							}
+							//回到原来位置
+	//						tweenMainButtonAnimationBack = TweenLite.to(divMainButton, 1, {top: divMainButtonInitTop + "px", onComplete:function(){
+	//							//开始主键动画
+	//							setMainButtonAnimation();
+	//						}});
+	//						tweenMountain1AnimationBack = TweenLite.to(divMountain1, 1, {top: divMountain1InitTop + "px"});
+	//						tweenMountain2AnimationBack = TweenLite.to(divMountain2, 1, {top: divMountain2InitTop + "px"});
+	//						tweenMountain3AnimationBack = TweenLite.to(divMountain3, 1, {top: divMountain3InitTop + "px"});
+							event.preventDefault();
+						}
+					}
+					else {
+						event.preventDefault();
+					}
+				}, false);
 				isIOS = plus.os.name.toLowerCase().indexOf('ios') >= 0;
 				plus.screen.lockOrientation("portrait-primary"); //锁定竖屏
 				plus.device.setWakelock(true); //屏幕常亮
@@ -244,14 +269,35 @@
 				//添加事件
 				funs.push(function(n,cb){
 					window.onscroll = function(){
+						if (isScrollToBottom() ){
+							console.log('滚动到底部了');
+							if (touchMoveAnimation){
+								touchMoveAnimation.kill();
+							}
+						}
 						//console.log(divMainButton.getBoundingClientRect().top);
+						//var mainButtionBoxShadow = divMainButton.style.boxShadow;
+						//console.log(divMainButton.getBoundingClientRect().top - mainButtionBoxShadow.substring(mainButtionBoxShadow.indexOf(')') + 1).replace(/px/g,'').split(' ')[3]);
 					};
-//					var wrapper = document.getElementsByTagName('body')[0];
-//					var myScroll = new IScroll(wrapper);
 					completeInit(); //完成初始化
 				});
 				async.waterfall(funs,function(err,data){});
 			});
+
+			/**
+			 * 是否滚动到底部
+			 */
+			function isScrollToBottom(){
+				var scrollTop = jQuery(window).scrollTop();
+				var scrollHeight = jQuery(document).height();
+				var windowHeight = jQuery(window).height();
+				if(scrollTop + windowHeight == scrollHeight){
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
 
 			/**
 			 * 完成初始化
@@ -265,6 +311,7 @@
 			 * 获取日记列表
 			 */
 			function getDiaryList() {
+				//每次加载20条，因为加载多了就需要更多时间渲染，大约100条1秒
 				var result = [];
 				result.push({
 					date: '2016-12-09',
@@ -278,42 +325,20 @@
 					hasLast: false,
 					hasNext: true
 				});
-				result.push({
-					date: '2016-12-09',
-					weather: 'rain',
-					content: '为了保证扩展API的有效调用，所有应用页面都会用到的重要事件。 应用页面显示时需要首先加载扩展和API代码库，当扩展API代码库加载完成时会触发pluseready事件，当设备触发该事件后，用户就可以安全的调用扩展API。 如果程序中打开多个页面，每个都会收到此事件。',
-					image: 'assets/image/IMG_1001.JPG',
-					expression: 'anger',
-					hasPicture: true,
-					hasAudio: false,
-					hasVideo: false,
-					hasLast: true,
-					hasNext: true
-				});
-				result.push({
-					date: '2016-12-09',
-					weather: 'rain',
-					content: '为了保证扩展API的有效调用，所有应用页面都会用到的重要事件。 应用页面显示时需要首先加载扩展和API代码库，当扩展API代码库加载完成时会触发pluseready事件，当设备触发该事件后，用户就可以安全的调用扩展API。 如果程序中打开多个页面，每个都会收到此事件。',
-					image: 'assets/image/IMG_1001.JPG',
-					expression: 'anger',
-					hasPicture: true,
-					hasAudio: false,
-					hasVideo: false,
-					hasLast: true,
-					hasNext: true
-				});
-				result.push({
-					date: '2016-12-09',
-					weather: 'rain',
-					content: '为了保证扩展API的有效调用，所有应用页面都会用到的重要事件。 应用页面显示时需要首先加载扩展和API代码库，当扩展API代码库加载完成时会触发pluseready事件，当设备触发该事件后，用户就可以安全的调用扩展API。 如果程序中打开多个页面，每个都会收到此事件。',
-					image: 'assets/image/IMG_1001.JPG',
-					expression: 'anger',
-					hasPicture: true,
-					hasAudio: false,
-					hasVideo: false,
-					hasLast: true,
-					hasNext: true
-				});
+				for (var i = 0; i < 20; i++){
+					result.push({
+						date: '2016-12-09',
+						weather: 'rain',
+						content: '为了保证扩展API的有效调用，所有应用页面都会用到的重要事件。 应用页面显示时需要首先加载扩展和API代码库，当扩展API代码库加载完成时会触发pluseready事件，当设备触发该事件后，用户就可以安全的调用扩展API。 如果程序中打开多个页面，每个都会收到此事件。',
+						image: 'assets/image/IMG_1001.JPG',
+						expression: 'anger',
+						hasPicture: true,
+						hasAudio: false,
+						hasVideo: false,
+						hasLast: true,
+						hasNext: true
+					});
+				}
 				result.push({
 					date: '2016-12-09',
 					weather: 'cloudy',
