@@ -145,10 +145,20 @@
 			var isNight = utility.isNight();
 			var currentWebview;		//当前webview
 			var isIOS = false;		//是否是IOS
+			var detailWebview;
 			mui.init({
 				swipeBack: false, //关闭侧滑
 			});
 			mui.plusReady(function() {
+				var detailWebview = mui.preload({
+				    url: "detail.html",
+				    id: "detail",
+				    extras:{
+				        username:'mui'
+				    }
+				});
+				divMainButton.removeEventListener('tap', gotoDetail, false);
+				divMainButton.addEventListener('tap', gotoDetail, false);
 				//开始拖动
 				//因为ios上的webview滚动会阻塞js，所以用touch事件
 				document.body.addEventListener('touchstart', function (event) {
@@ -304,7 +314,7 @@
 			/**
 			 * 滚动的时候设置主按钮样式
 			 */
-			function  setMainButtonStyleWhenScroll(){
+			function setMainButtonStyleWhenScroll(){
 				var distanceCurrentMainButton = divMainButton.getBoundingClientRect().top - divTopMainButton.getBoundingClientRect().top;
 				if (distanceCurrentMainButton > 5){
 					divMainButton.style.visibility = 'visible';
@@ -322,6 +332,9 @@
 					}
 					header.style.boxShadow = "0 1px 2px rgba(0,0,0,0)";
 					divHeaderRadian.style.boxShadow = "0 2px 2px rgba(0,0,0,0)";
+					divMainButton.removeEventListener('tap', gotoDetail, false);
+					divMainButton.addEventListener('tap', gotoDetail, false);
+					divTopMainButton.removeEventListener('tap', gotoDetail, false);
 				}
 				else {
 					divMainButton.style.visibility = 'hidden';
@@ -330,7 +343,42 @@
 					divHeaderRadian.style.background = "rgba(" + styleWithTime.topBarBg + ",1)";
 					header.style.boxShadow = "0 1px 2px rgba(" + styleWithTime.topBarBorder + ",1)";
 					divHeaderRadian.style.boxShadow = "0 2px 2px rgba(" + styleWithTime.topBarBorder + ",1)";
+					divMainButton.removeEventListener('tap', gotoDetail, false);
+					divTopMainButton.removeEventListener('tap', gotoDetail, false);
+					divTopMainButton.addEventListener('tap', gotoDetail, false);
 				}
+			}
+
+			/**
+			 * 转到详细页
+			 */
+			function gotoDetail(){
+				var webview = plus.webview.getWebviewById("detail");
+				if (webview){
+					plus.webview.show(webview,"slide-in-right",200, null, {username:"abcs"});
+				}
+				//console.log("gotoDetail");
+//				if (detailWebview){
+//					console.log(detailWebview);
+//					debugger;
+//				}
+//				mui.openWindow({
+//					url: 'detail.html',
+//					id: 'detail',
+//					styles: {
+//						popGesture: "close"
+//					},
+//					extras: {
+//						
+//					},
+//					createNew: false,
+//					show: {
+//						aniShow: "pop-in"
+//					},
+//					waiting: {
+//						autoShow: false
+//					}
+//				});
 			}
 
 			/**

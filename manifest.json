@@ -254,13 +254,23 @@
 					"css/iconfont.css",
 					"fonts/iconfont.woff"
 				],
+				"refer": [
+					"detail.html"
+				],
+				"priority": 0
+			},
+			"detail.html": {
+				"resources": [
+					"js/mui.min.js",
+					"css/iconfont.css",
+					"css/mui.min.css"
+				],
 				"refer": [],
 				"priority": 0
 			}
 		},
 		"idle": {
 			"resources": [
-				"detail.html",
 				"js/mui.js",
 				"css/mui.css",
 				"README.md"

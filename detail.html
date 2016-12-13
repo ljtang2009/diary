@@ -4,13 +4,25 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="css/iconfont.css" />
 		<title>日记明细</title>
 	</head>
 	<body>
 		<div class="mui-content">
-			日记明细
+			<button type="button" class='mui-btn mui-btn-danger mui-action-back' style="position: absolute; top: 100px; left: 100px;">关闭</button>
 		</div>
 		<script src="js/mui.min.js"></script>
-		
+		<script>
+			var currentWebView;
+			mui.init({
+				swipeBack: false, //关闭侧滑
+			});
+			mui.plusReady(function() {
+//				currentWebView = plus.webview.currentWebview();
+//				currentWebView.addEventListener("show",function(e){
+//					
+//				});
+			});
+		</script>
 	</body>
 </html>
