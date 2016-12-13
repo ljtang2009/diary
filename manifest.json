@@ -249,7 +249,10 @@
 					"image/cloud/cloud1.png",
 					"image/cloud/cloud2.png",
 					"lib/async/async.min.js",
-					"lib/iscroll/iscroll-lite.js"
+					"lib/iscroll/iscroll-lite.js",
+					"css/index.css",
+					"css/iconfont.css",
+					"fonts/iconfont.woff"
 				],
 				"refer": [],
 				"priority": 0

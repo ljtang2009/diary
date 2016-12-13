@@ -1,0 +1,54 @@
+
+@font-face {font-family: "iconfont";[]
+  src: url('../fonts/iconfont.eot?t=1481608377390'); /* IE9*/
+  src: url('../fonts/iconfont.eot?t=1481608377390#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('../fonts/iconfont.woff?t=1481608377390') format('woff'), /* chrome, firefox */
+  url('../fonts/iconfont.ttf?t=1481608377390') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('../fonts/iconfont.svg?t=1481608377390#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family:"iconfont" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+}
+/*视频*/
+.icon-file-video:before { content: "\e600"; }
+/*日历*/
+.icon-calendar:before { content: "\e62f"; }
+/*照片*/
+.icon-file-picture:before { content: "\e672"; }
+/*阴*/
+.icon-weather-overcast:before { content: "\e619"; }
+/*晴*/
+.icon-weather-fine:before { content: "\e6f3"; }
+/*设置*/
+.icon-setting:before { content: "\e633"; }
+/*照片*/
+.icon-icon:before { content: "\e62e"; }
+/*霾*/
+.icon-weather-haze:before { content: "\e646"; }
+/*多云*/
+.icon-weather-cloudy:before { content: "\e8b8"; }
+/*声音*/
+.icon-file-audio:before { content: "\e630"; }
+/*怒脸*/
+.icon-expression-anger:before { content: "\e737"; }
+/*木脸*/
+.icon-expression-normal:before { content: "\e7fc"; }
+/*沙尘预警*/
+.icon-weather-sand:before { content: "\e631"; }
+/*雨*/
+.icon-weather-rain:before { content: "\e63a"; }
+/*雪*/
+.icon-weather-snow:before { content: "\e63c"; }
+/*高兴*/
+.icon-expression-happy:before { content: "\e632"; }
+/*树*/
+.icon-tree:before { content: "\e648"; }
+/*雾*/
+.icon-weather-fog:before { content: "\e6f2"; }
+/*哭脸*/
+.icon-expression-cry:before { content: "\e60d"; }
+

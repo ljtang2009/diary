@@ -5,23 +5,24 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		<link rel="stylesheet" href="css/mui.min.css">
-		<link rel="stylesheet" type="text/css" href="style/index.css" />
+		<link rel="stylesheet" type="text/css" href="css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
 		<title>diary</title>
 	</head>
 
 	<body>
 		<header id="header" class="mui-bar" style="background: rgba(0,0,0,0); box-shadow: 0 1px 2px rgba(0,0,0,0);">
 			<div style="width: 100%; display: flex; justify-content: space-between;">
-				<div style="width: 100px;">
-					<div style="padding-top: 8px; width: 50px; text-align: center;"><embed src="image/tree.svg" onload="changSvgColor(this);" style="width: 26px;" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/"></embed></div>
+				<div class="divHeaderSide">
+					 <div class="divHeaderIco" style="width: 50px;"><span name="spIcon" class="iconfont icon-tree spHeaderIcon" style="display: none;"></span></div>
 				</div>
 				<div>
 					<div id="divHeaderRadian" style="position: relative; top: 44px; width: 85px; height: 40px; border-radius: 0 0 190px 190px; background: rgba(0,0,0,0); box-shadow: 0 2px 2px rgba(0,0,0,0);"></div>
 					<div id="divTopMainButton" style="visibility: hidden; position: relative; top: -30px; left: 11px; width: 64px; height: 64px; border-radius: 100%;"></div>
 				</div>
-				<div style="display: flex; width: 100px; justify-content: space-between;">
-					<div style="padding-top: 8px; width: 50px; text-align: center;"><embed src="image/calendar.svg" onload="changSvgColor(this);" style="width: 26px;" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/"></embed></div>
-					<div style="padding-top: 8px; width: 50px; text-align: center;"><embed src="image/setting.svg" onload="changSvgColor(this);" style="width: 26px;" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/"></embed></div>
+				<div class="divHeaderSide" style="display: flex; justify-content: space-between;">
+					<div class="divHeaderIco"><span name="spIcon" class="iconfont icon-calendar spHeaderIcon" style="display: none;"></span></div>
+					<div class="divHeaderIco"><span name="spIcon" class="iconfont icon-setting spHeaderIcon" style="display: none;"></span></div>
 				</div>
 			</div>
 		</header>
@@ -65,17 +66,19 @@
 					<div>{{yearMonth}}</div>
 					<div>{{dayOfWeekChinese}}</div>
 					<div class="svgTimelineContainer">
-						<div><embed name='svg' src="image/weather/{{weather}}.svg" onload="changSvgColor(this);" class="svgTimeline" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/"></embed>
-						</div>
+						<div><span class="iconfont icon-weather-{{weather}} spDiaryTimelineIcon"></span></div>
 						{{# if expression}}
-						<div><embed name='svgTimeline' onload="changSvgColor(this);" src="image/expression/{{expression}}.svg" class="svgTimeline" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/"></embed>
-						</div>{{/if}} {{# if hasPicture}}
-						<div><embed name='svgTimeline' onload="changSvgColor(this);" src="image/fileIcon/picture.svg" class="svgTimeline" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/"></embed>
-						</div>{{/if}} {{# if hasAudio}}
-						<div><embed name='svgTimeline' onload="changSvgColor(this);" src="image/fileIcon/audio.svg" class="svgTimeline" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/"></embed>
-						</div>{{/if}} {{# if hasVideo}}
-						<div><embed name='svgTimeline' onload="changSvgColor(this);" src="image/fileIcon/video.svg" class="svgTimeline" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/"></embed>
-						</div>{{/if}}
+						<div><span class="iconfont icon-expression-{{expression}} spDiaryTimelineIcon"></span></div>
+						{{/if}}
+						{{# if hasPicture}}
+						<div><span class="iconfont icon-file-picture spDiaryTimelineIcon"></span></div>
+						{{/if}} 
+						{{# if hasAudio}}
+						<div><span class="iconfont icon-file-audio spDiaryTimelineIcon"></span></div>
+						{{/if}} 
+						{{# if hasVideo}}
+						<div><span class="iconfont icon-file-video spDiaryTimelineIcon"></span></div>
+						{{/if}}
 					</div>
 				</div>
 				<div class="divTimelineLineContainer">
@@ -398,20 +401,7 @@
 				});
 				return result;
 				//return [];
-			}
-
-			/**
-			 * 改变svg颜色
-			 * @param {Object} e
-			 */
-			function changSvgColor(sender) {
-				if (styleWithTime && styleWithTime.mainButtonColor){
-						utility.setSvgColor({
-						containerArray: [sender],
-						color: styleWithTime.mainButtonColor
-					});
-				}
-			}
+		}
 		</script>
 	</body>
 

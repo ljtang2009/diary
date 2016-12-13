@@ -11,7 +11,7 @@
 		if (now_hour >= 18 || now_hour < 6){
 			result = true;
 		}
-		return result;
+		return true;
 	}
 	/**
 	 * @description 更具时间获取样式
@@ -42,30 +42,6 @@
 			result.topBarBorder = "209,155,16";
 		}
 		return result;
-	}
-	/**
-	 * @description 设置svg的颜色
-	 * @param {Object} cfg {containerSelector:'',color:''}
-	 */
-	_utility.prototype.setSvgColor = function(cfg){
-		for (var j = 0; j < cfg.containerArray.length; j++){
-			var container = cfg.containerArray[j];
-			var subdoc;
-				if (container.contentDocument) {
-					subdoc = container.contentDocument;
-				} 
-				else {
-					try {
-						subdoc = container.getSVGDocument();
-					} catch(e) {}
-				}
-				if (subdoc){
-					var pathes = subdoc.querySelectorAll('path');
-					for (var i = 0; i < pathes.length; i++) {
-						pathes[i].style.fill = cfg.color;
-					}
-				}
-		}
 	}
 	/**
 	 * 获取元素绝对位置

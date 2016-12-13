@@ -35,6 +35,12 @@
 		newStyleElement.innerText = ".divDiaryContentItem:after {border-right-color: " + styleWithTime.mainButtonColor + ";} ";
 		newStyleElement.innerText += ".mui-table-view-cell.mui-active>.mui-slider-handle {background-color: " + styleWithTime.timelineActiveItmeBgColor + "}";
 		document.body.appendChild(newStyleElement);
+		//图标颜色
+		var spIconArray = document.getElementsByName('spIcon');
+		for(var i = 0; i < spIconArray.length; i++){
+			spIconArray[i].style.color = styleWithTime.mainButtonColor;
+			spIconArray[i].style.display = "block";
+		}
 		//显示星星
 		if (isNight){
 			var divStar1 = document.getElementById('divStar1');
