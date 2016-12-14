@@ -355,7 +355,11 @@
 			function gotoDetail(){
 				var webview = plus.webview.getWebviewById("detail");
 				if (webview){
-					plus.webview.show(webview,"slide-in-right",200, null, {username:"abcs"});
+					mui.fire(webview,'send',{
+						targetId: '123'
+					});
+					 console.log(moment().format());
+					plus.webview.show(webview,"slide-in-right",300, null);
 				}
 				//console.log("gotoDetail");
 //				if (detailWebview){

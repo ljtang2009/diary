@@ -263,7 +263,8 @@
 				"resources": [
 					"js/mui.min.js",
 					"css/iconfont.css",
-					"css/mui.min.css"
+					"css/mui.min.css",
+					"lib/sqlite/sql.js"
 				],
 				"refer": [],
 				"priority": 0

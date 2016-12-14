@@ -10,10 +10,15 @@
 	<body>
 		<div class="mui-content">
 			<button type="button" class='mui-btn mui-btn-danger mui-action-back' style="position: absolute; top: 100px; left: 100px;">关闭</button>
+			<button id="btnPost" type="button" class='mui-btn' style="position: absolute; top: 180px; left: 100px;">写数据</button>
+			<button id="btnGet" type="button" class='mui-btn' style="position: absolute; top: 260px; left: 100px;">读数据</button>
 		</div>
 		<script src="js/mui.min.js"></script>
+		<script src="lib/sqlite/sql.js"></script>
+		<script src="lib/moment/moment.min.js"></script>
 		<script>
 			var currentWebView;
+			var db = new SQL.Database();
 			mui.init({
 				swipeBack: false, //关闭侧滑
 			});
@@ -22,6 +27,32 @@
 //				currentWebView.addEventListener("show",function(e){
 //					
 //				});
+				
+			});
+			// 添加send自定义事件监听
+			window.addEventListener('send',function(event){
+			  //获得事件参数
+			  var targetId = event.detail.targetId;
+			  console.log(moment().format());
+			});
+			var btnPost = document.getElementById("btnPost");
+			var btnGet = document.getElementById("btnGet");
+			btnPost.addEventListener("tap",function(){
+				db.run("CREATE TABLE test (col1, col2);");
+				db.run("INSERT INTO test VALUES (?,?), (?,?)", [1,111,2,222]);
+			});
+			btnGet.addEventListener("tap",function(){
+				var stmt = db.prepare("SELECT * FROM test WHERE col1 BETWEEN $start AND $end");
+			    stmt.getAsObject({$start:1, $end:1}); // {col1:1, col2:111}
+			
+			    // Bind new values
+			    stmt.bind({$start:1, $end:2});
+			    while(stmt.step()) { //
+			        var row = stmt.getAsObject();
+			        alert(row);
+			        console.log(row);
+			        // [...] do something with the row of result
+			    }
 			});
 		</script>
 	</body>
