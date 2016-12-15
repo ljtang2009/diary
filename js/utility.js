@@ -11,7 +11,7 @@
 		if (now_hour >= 18 || now_hour < 6){
 			result = true;
 		}
-		return true;
+		return false;
 	}
 	/**
 	 * @description 更具时间获取样式
@@ -20,24 +20,10 @@
 	_utility.prototype.getStyleWithTime = function(){
 		var result = {};
 		if (this.isNight()){
-			result.bg = "linear-gradient(to bottom, #004FAA, #4F9DCA)";		//背景色
-			result.mountain1 = "night_mountain_1.png";		//山图片1
-			result.mountain2 = "night_mountain_2.png";		//山图片2
-			result.mountain3 = "night_mountain_3.png";		//山图片2
-			result.mainButtonColor = "#9EBEDF";				//主按钮颜色
-			result.timelineBgColor = "#0C2A38";			//时间轴背景色
-			result.timelineActiveItmeBgColor = "#0B4B7E";		//时间轴当前选中的背景色
 			result.topBarBg = "0,79,170";		//顶栏背景色
 			result.topBarBorder = "8,60,108";	//顶栏边框
 		}
 		else {
-			result.bg = "linear-gradient(to bottom, #FEDE84, #FCE8B4)";
-			result.mountain1 = "day_mountain_1.png";
-			result.mountain2 = "day_mountain_2.png";
-			result.mountain3 = "day_mountain_3.png";
-			result.mainButtonColor = "#FFF2CF";
-			result.timelineBgColor = "#A7A63F";
-			result.timelineActiveItmeBgColor = "#EABB38";
 			result.topBarBg = "252,193,100";
 			result.topBarBorder = "209,155,16";
 		}

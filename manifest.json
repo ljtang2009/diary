@@ -252,7 +252,9 @@
 					"lib/iscroll/iscroll-lite.js",
 					"css/index.css",
 					"css/iconfont.css",
-					"fonts/iconfont.woff"
+					"fonts/iconfont.woff",
+					"css/day.css",
+					"css/night.css"
 				],
 				"refer": [
 					"detail.html"
@@ -264,7 +266,18 @@
 					"js/mui.min.js",
 					"css/iconfont.css",
 					"css/mui.min.css",
-					"lib/sqlite/sql.js"
+					"lib/sqlite/sql.js",
+					"lib/moment/moment.min.js",
+					"css/detail.css",
+					"js/utility.js",
+					"css/night.css",
+					"js/view/detailView.js",
+					"fonts/mui.ttf",
+					"fonts/iconfont.woff",
+					"css/day.css",
+					"lib/flexText/jquery.flexText.min.js",
+					"lib/jquery/jquery.min.js",
+					"lib/flexText/style.css"
 				],
 				"refer": [],
 				"priority": 0

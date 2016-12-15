@@ -7,42 +7,43 @@
 		<link rel="stylesheet" href="css/mui.min.css">
 		<link rel="stylesheet" type="text/css" href="css/iconfont.css" />
 		<link rel="stylesheet" type="text/css" href="css/index.css" />
-		<title>diary</title>
+		<link id="linkTimeStyle" rel="stylesheet" type="text/css" href="" />
+		<title>主页</title>
 	</head>
 
 	<body>
 		<header id="header" class="mui-bar" style="background: rgba(0,0,0,0); box-shadow: 0 1px 2px rgba(0,0,0,0);">
 			<div style="width: 100%; display: flex; justify-content: space-between;">
 				<div class="divHeaderSide">
-					 <div class="divHeaderIco" style="width: 50px;"><span name="spIcon" class="iconfont icon-tree spHeaderIcon" style="display: none;"></span></div>
+					 <div class="divHeaderIco" style="width: 50px;"><span name="spIcon" class="iconfont icon-tree spIndexHeaderIcon"></span></div>
 				</div>
 				<div>
 					<div id="divHeaderRadian" style="position: relative; top: 44px; width: 85px; height: 40px; border-radius: 0 0 190px 190px; background: rgba(0,0,0,0); box-shadow: 0 2px 2px rgba(0,0,0,0);"></div>
-					<div id="divTopMainButton" style="visibility: hidden; position: relative; top: -30px; left: 11px; width: 64px; height: 64px; border-radius: 100%;"></div>
+					<div id="divTopMainButton" class="divIndexTopMainButton" style="visibility: hidden;"></div>
 				</div>
 				<div class="divHeaderSide" style="display: flex; justify-content: space-between;">
-					<div class="divHeaderIco"><span name="spIcon" class="iconfont icon-calendar spHeaderIcon" style="display: none;"></span></div>
-					<div class="divHeaderIco"><span name="spIcon" class="iconfont icon-setting spHeaderIcon" style="display: none;"></span></div>
+					<div class="divHeaderIco"><span name="spIcon" class="iconfont icon-calendar spIndexHeaderIcon"></span></div>
+					<div class="divHeaderIco"><span name="spIcon" class="iconfont icon-setting spIndexHeaderIcon"></span></div>
 				</div>
 			</div>
 		</header>
 		<div class="mui-content">
-			<div id="divGB" style="z-index: 0; width: 100%;">
+			<div id="divGB" class="divIndexBg">
 			</div>
-			<div id="divMountain3" style="z-index: 1; width: 60%; position: absolute; right: 0px; background-repeat: no-repeat; background-size: 100% 100%;">
+			<div id="divMountain3" class="divIndexMountain3" style="z-index: 1;">
 			</div>
-			<div id="divMountain2" style="z-index: 2; width: 100%; position: absolute; left: 0px;background-repeat: no-repeat; background-size: 100% 100%;">
+			<div id="divMountain2" class="divIndexMountain divIndexMountain2" style="z-index: 2;">
 			</div>
-			<div id="divMountain1" style="z-index: 3; width: 100%; position: absolute; left: 0px;background-repeat: no-repeat; background-size: 100% 100%;">
+			<div id="divMountain1" class="divIndexMountain divIndexMountain1" style="z-index: 3;">
 			</div>
-			<div id="divStar1" style="width: 10px; height: 10px; border-radius: 100%; background-color: #9EBEDF; position: absolute; z-index: 5; display: none; opacity: 1;"></div>
-			<div id="divStar2" style="width: 12px; height: 12px; border-radius: 100%; background-color: #9EBEDF; position: absolute; z-index: 5; display: none; opacity: 0.5;"></div>
-			<div id="divStar3" style="width: 7px; height: 7px; border-radius: 100%; background-color: #9EBEDF; position: absolute; z-index: 5; display: none; opacity: 0.2;"></div>
-			<div id="divCloud1" style="position: absolute; z-index: 5; display: none;"><img src="image/cloud/cloud1.png" style="width: 50px;" /></div>
-			<div id="divCloud2" style="position: absolute; z-index: 5; display: none;"><img src="image/cloud/cloud2.png" style="width: 60px;" /></div>
-			<div id="divMainButton" style="z-index: 20; position: absolute; border-radius: 100%;">
+			<div id="divStar1" class="divIndexStar1" style="z-index: 5; display: none; opacity: 1;"></div>
+			<div id="divStar2" class="divIndexStar2" style="z-index: 5; display: none; opacity: 0.5;"></div>
+			<div id="divStar3" class="divIndexStar3" style="z-index: 5; display: none; opacity: 0.2;"></div>
+			<div id="divCloud1" class="divIndexCloud1" style="position: absolute; z-index: 5; display: none;"><img src="image/cloud/cloud1.png" /></div>
+			<div id="divCloud2" class="divIndexCloud2" style="position: absolute; z-index: 5; display: none;"><img src="image/cloud/cloud2.png" /></div>
+			<div id="divMainButton" class="divIndexMainButton">
 			</div>
-			<div id="divDiaryList" style="display: none; z-index: 5; position: absolute; width: 100%; padding-bottom: 10px;">
+			<div id="divDiaryList" class="divIndexDiaryList" style="display: none;">
 				<ul id="ulDairyList" style="list-style-type:none; padding: 0; margin: 0;" class="mui-table-view">
 				</ul>
 			</div>
@@ -62,7 +63,7 @@
 				<a class="mui-btn mui-btn-red mui-icon mui-icon-trash"></a>
 			</div>
 			<div style="display: flex;" class="mui-slider-handle">
-				<div class="divDiaryTimelineLeft">
+				<div class="divIndexDiaryTimelineLeft">
 					<div>{{yearMonth}}</div>
 					<div>{{dayOfWeekChinese}}</div>
 					<div class="svgTimelineContainer">
@@ -81,13 +82,13 @@
 						{{/if}}
 					</div>
 				</div>
-				<div class="divTimelineLineContainer">
+				<div class="divIndexTimelineLineContainer">
 					<div class="divTimelineLineUP" style="{{# if hasLast}}visibility: visible;{{~^~}}visibility: hidden;{{/if}}"></div>
 					<div class="divTimelineLineText">{{day}}</div>
 					<div class="divTimelineLineDown" style="{{# if hasNext}}visibility: visible;{{~^~}}visibility: hidden;{{/if}}"></div>
 				</div>
 				<div style="flex-grow: 100;">
-					<div class="divDiaryContentItem">
+					<div class="divIndexDiaryContentItem">
 						<div name="divDiaryText" class="divDiaryContentText">{{content}}</div>
 						<div class="divDiaryContentImg" style="{{#if hasPicture}}display: block;{{~^~}}display: none;{{/if}}"><img src="{{image}}"></div>
 					</div>
@@ -101,6 +102,11 @@
 			var divMountain3 = document.getElementById("divMountain3");
 			var divMainButton = document.getElementById("divMainButton");
 			var divTopMainButton = document.getElementById("divTopMainButton");
+			var divStar1 = document.getElementById('divStar1');
+			var divStar2 = document.getElementById('divStar2');
+			var divStar3 = document.getElementById('divStar3');
+			var divCloud1 = document.getElementById('divCloud1');
+			var divCloud2 = document.getElementById('divCloud2');
 			var divDiaryList = document.getElementById('divDiaryList');
 			var ulDairyList = document.getElementById('ulDairyList');
 			var sourceDiaryItem = document.getElementById('diaryItemTempte').innerHTML;
@@ -141,17 +147,21 @@
 			var divMountain2InitTop;
 			var divMountain3InitTop;
 			var divDiaryListInitTop;
+			var distanceCurrentMainButton;	//主按钮和顶部主按钮的距离
+			var linkTimeStyle = document.getElementById("linkTimeStyle");
 			var styleWithTime = utility.getStyleWithTime();//区分时间的样式
 			var isNight = utility.isNight();
+			linkTimeStyle.setAttribute("href","css/" + (isNight ? "night" : "day") + ".css");
 			var currentWebview;		//当前webview
 			var isIOS = false;		//是否是IOS
 			var detailWebview;
 			mui.init({
-				swipeBack: false, //关闭侧滑
+				//swipeBack: false, //关闭侧滑
 			});
 			mui.plusReady(function() {
 				var detailWebview = mui.preload({
-				    url: "detail.html",
+//				    url: "detail.html",
+					url: "test/im-chat.html",
 				    id: "detail",
 				    extras:{
 				        username:'mui'
@@ -271,6 +281,10 @@
 				plus.device.setWakelock(true); //屏幕常亮
 				currentWebview = plus.webview.currentWebview();
 				currentWebview.setStyle({"scrollIndicator":"none"});		//隐藏webview的滚动条
+				document.addEventListener("resume", function(){
+					//刷新颜色
+					refreshTimeStyle();
+				}, false);
 				var funs = [];
 				//初始化样式
 				funs.push(function(cb){
@@ -315,7 +329,7 @@
 			 * 滚动的时候设置主按钮样式
 			 */
 			function setMainButtonStyleWhenScroll(){
-				var distanceCurrentMainButton = divMainButton.getBoundingClientRect().top - divTopMainButton.getBoundingClientRect().top;
+				distanceCurrentMainButton = divMainButton.getBoundingClientRect().top - divTopMainButton.getBoundingClientRect().top;
 				if (distanceCurrentMainButton > 5){
 					divMainButton.style.visibility = 'visible';
 					divTopMainButton.style.visibility = "hidden";
@@ -358,8 +372,7 @@
 					mui.fire(webview,'send',{
 						targetId: '123'
 					});
-					 console.log(moment().format());
-					plus.webview.show(webview,"slide-in-right",300, null);
+					plus.webview.show(webview,"slide-in-right", 300);
 				}
 				//console.log("gotoDetail");
 //				if (detailWebview){
@@ -452,8 +465,46 @@
 					hasNext: false
 				});
 				return result;
-				//return [];
-		}
+			}
+			
+			/**
+			 * 刷新颜色
+			 */
+			function refreshTimeStyle(){
+				var tempIsNight = utility.isNight();
+				if (isNight != tempIsNight){
+					isNight = tempIsNight;
+					styleWithTime = utility.getStyleWithTime();
+					linkTimeStyle.setAttribute("href","css/" + (isNight ? "night" : "day") + ".css");
+					if (isNight){
+						divStar1.style.display = "block";
+						divStar2.style.display = "block";
+						divStar3.style.display = "block";
+						divCloud1.style.display = "none";
+						divCloud2.style.display = "none";
+					}
+					else {
+						divStar1.style.display = "none";
+						divStar2.style.display = "none";
+						divStar3.style.display = "none";
+						divCloud1.style.display = "block";
+						divCloud2.style.display = "block";
+					}
+					distanceCurrentMainButton = divMainButton.getBoundingClientRect().top - divTopMainButton.getBoundingClientRect().top;
+					if (distanceCurrentMainButton > 5){
+						if (distanceCurrentMainButton < 60) {
+							header.style.background = "rgba(" + styleWithTime.topBarBg + "," + (1 - (distanceCurrentMainButton) / 60) + ")";
+							divHeaderRadian.style.background = "rgba(" + styleWithTime.topBarBg + "," + (1 - (distanceCurrentMainButton) / 60) + ")";
+						}
+					}
+					else {
+						header.style.background = "rgba(" + styleWithTime.topBarBg + ",1)";
+						divHeaderRadian.style.background = "rgba(" + styleWithTime.topBarBg + ",1)";
+						header.style.boxShadow = "0 1px 2px rgba(" + styleWithTime.topBarBorder + ",1)";
+						divHeaderRadian.style.boxShadow = "0 2px 2px rgba(" + styleWithTime.topBarBorder + ",1)";
+					}
+				}
+			}
 		</script>
 	</body>
 

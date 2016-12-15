@@ -1,0 +1,44 @@
+.divIndexBg {
+	background: linear-gradient(to bottom, #004FAA, #4F9DCA);
+}
+
+.divIndexMountain1{
+	background-image: url(../image/night_mountain_1.png);
+}
+
+.divIndexMountain2{
+	background-image: url(../image/night_mountain_2.png);
+}
+
+.divIndexMountain3{
+	background-image: url(../image/night_mountain_3.png);
+}
+
+.divIndexMainButton, .divIndexTopMainButton, .divIndexDiaryContentItem{
+	background-color: #9EBEDF;
+}
+
+.divIndexDiaryContentItem:after {
+	border-right-color:#9EBEDF;
+}
+
+.spIndexHeaderIcon, .divIndexDiaryTimelineLeft, .divIndexTimelineLineContainer, .divHead{
+	color: #9EBEDF;
+}
+
+.divIndexDiaryList, .divDetailMUIContent{
+	background-color: #0C2A38;
+}
+
+.mui-table-view-cell.mui-active>.mui-slider-handle {
+	background-color: #0B4B7E;
+}
+
+.divDetailHeadOut{
+	background-color: #004FAA;
+	box-shadow: 0 1px 2px rgba(8,60,108,1);
+}
+
+.divHeadDisable{
+	color: #1D6CB6;
+}

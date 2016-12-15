@@ -1,0 +1,26 @@
+.divHeaderSide{
+	width: 100px; height: 50px;
+}
+
+.divHeaderIco{
+	padding-top: 12px; 
+	padding-left: 10px; 
+	padding-right: 10px; 
+}
+
+.spIndexHeaderIcon{
+	font-size: 24px;
+}
+
+.divHead{
+	padding: 12px;
+	font-size: 18px;
+}
+
+.divDetailHeadOut{
+	width: 40px; height: 40px; line-height: 35px; position: absolute; border-radius: 100%; text-align: center;
+}
+
+::-moz-placeholder { color: #369; }
+::-webkit-input-placeholder { color:#369; }
+:-ms-input-placeholder { color:#369; }

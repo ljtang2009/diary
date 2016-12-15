@@ -9,8 +9,8 @@
 	padding-right: 10px; 
 }
 
-.spHeaderIcon{
-	font-size: 28px
+.spIndexHeaderIcon{
+	font-size: 24px
 }
 
 .svgTimelineContainer {
@@ -28,16 +28,16 @@
 /**
  * 日记内容样式
  */
-.divDiaryContentItem {
+.divIndexDiaryContentItem {
   position: relative;
   border-radius: 1px;
   height: 75px; 
-  margin: 10px 10px 0 10px;
+  margin: 5px 10px 5px 10px;
   display: flex; 
   padding: 6px 0 6px 6px;
 }
 
-.divDiaryContentItem:after, .divDiaryContentItem:before {
+.divIndexDiaryContentItem:after, .divIndexDiaryContentItem:before {
   border: solid transparent;
   content: ' ';
   height: 0;
@@ -46,7 +46,7 @@
   width: 0;
 }
 
-.divDiaryContentItem:after {
+.divIndexDiaryContentItem:after {
   border-width: 9px;
   top: 10px;
 }
@@ -72,30 +72,30 @@
 	height: 64px;
 }
 
-.divDiaryTimelineLeft{
+.divIndexDiaryTimelineLeft{
 	text-align: center; font-size: 12px; padding: 10px 0px 5px 10px;
 }
 
-.divDiaryTimelineLeft div{
+.divIndexDiaryTimelineLeft div{
 	height: 18px;
 }
 
-.divTimelineLineContainer {
+.divIndexTimelineLineContainer {
 	width:30px; 
 	text-align: center; 
 	display: flex; 
 	flex-direction: column;
 }
 
-.divTimelineLineContainer > .divTimelineLineUP {
+.divIndexTimelineLineContainer > .divTimelineLineUP {
 	border-left: 1px solid; margin-left: 15px; height: 20px;
 }
 
-.divTimelineLineContainer > .divTimelineLineDown {
+.divIndexTimelineLineContainer > .divTimelineLineDown {
 	border-left: 1px solid; margin-left: 15px; flex-grow: 100;
 }
 
-.divTimelineLineContainer > .divTimelineLineText {
+.divIndexTimelineLineContainer > .divTimelineLineText {
 	height: 20px; font-size: 20px;
 }
 
@@ -130,4 +130,55 @@
 
 .spDiaryTimelineIcon{
 	font-size: 12px;
+}
+
+.divIndexBg{
+	z-index: 0; 
+	width: 100%;
+}
+
+.divIndexMountain{
+	width: 100%; position: absolute; left: 0px;background-repeat: no-repeat; background-size: 100% 100%;
+}
+
+.divIndexMountain3{
+	width: 60%; position: absolute; right: 0px; background-repeat: no-repeat; background-size: 100% 100%;
+}
+
+.divIndexMainButton{
+	z-index: 20; position: absolute; border-radius: 100%;
+}
+
+.divIndexTopMainButton{
+	position: relative; top: -30px; left: 11px; width: 64px; height: 64px; border-radius: 100%;
+}
+
+.divIndexDiaryList{
+	z-index: 5; position: absolute; width: 100%; padding-bottom: 10px;
+}
+
+.divIndexStar1{
+	width: 10px; height: 10px; border-radius: 100%; background-color: #9EBEDF; position: absolute; 
+}
+
+.divIndexStar2{
+	width: 7px; height: 7px; border-radius: 100%; background-color: #9EBEDF; position: absolute; 
+}
+
+.divIndexStar3{
+	width: 12px; height: 12px; border-radius: 100%; background-color: #9EBEDF; position: absolute; 
+}
+
+.divIndexCloud1 > img{
+	width: 65px;
+}
+
+.divIndexCloud2 > img{
+	width: 50px;
+}
+
+.mui-table-view-cell>.mui-slider-right>.mui-btn{
+	line-height: 75px;
+	height: 75px;
+	margin-top: -5px;
 }

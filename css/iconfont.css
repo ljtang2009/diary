@@ -51,4 +51,5 @@
 .icon-weather-fog:before { content: "\e6f2"; }
 /*哭脸*/
 .icon-expression-cry:before { content: "\e60d"; }
-
+/*分享*/
+.icon-shaire:before { content: "\e60a"; }

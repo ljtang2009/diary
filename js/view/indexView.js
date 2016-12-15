@@ -8,69 +8,46 @@
 		//背景
 		var divGB = document.getElementById("divGB");
 		divGB.style.height = window.innerHeight + 'px';
-		divGB.style.background = styleWithTime.bg;
 		//moutain1
-		divMountain1.style.backgroundImage = "url(image/" + styleWithTime.mountain1 + ")";
 		divMountain1.style.height = divMountain1.clientWidth * 0.3 + 'px';
 		divMountain1.style.top = window.innerHeight + 'px';
 		//mountain2
-		divMountain2.style.backgroundImage = "url(image/" + styleWithTime.mountain2 + ")";
 		divMountain2.style.height = divMountain2.clientWidth * 0.4 + 'px';
 		divMountain2.style.top = window.innerHeight + 'px';
 		//mountain2
-		divMountain3.style.backgroundImage = "url(image/" + styleWithTime.mountain3 + ")";
 		divMountain3.style.height = divMountain3.clientWidth * 0.4 + 'px';
 		divMountain3.style.top = window.innerHeight + 'px';
 		//初始化主按钮
-		divMainButton.style.backgroundColor = styleWithTime.mainButtonColor;
-		divMainButton.style.boxShadow = "0px 0px 10px 2px " + styleWithTime.mainButtonColor;
+		divMainButton.style.boxShadow = "0px 0px 10px 2px #F6F6F6";
 		divMainButton.style.width = divMainButton.style.height = window.innerHeight / 5 + "px";
 		divMainButton.style.left = (window.innerWidth / 2) - (divMainButton.clientWidth / 2) + "px";
-		divTopMainButton.style.backgroundColor = styleWithTime.mainButtonColor;
-		divTopMainButton.style.boxShadow = "0px 0px 10px 2px " + styleWithTime.mainButtonColor;
-		//内容
-		divDiaryList.style.backgroundColor = styleWithTime.timelineBgColor;
-		//箭头的背景色
-		var newStyleElement = document.createElement('style');
-		newStyleElement.innerText = ".divDiaryContentItem:after {border-right-color: " + styleWithTime.mainButtonColor + ";} ";
-		newStyleElement.innerText += ".mui-table-view-cell.mui-active>.mui-slider-handle {background-color: " + styleWithTime.timelineActiveItmeBgColor + "}";
-		document.body.appendChild(newStyleElement);
-		//图标颜色
-		var spIconArray = document.getElementsByName('spIcon');
-		for(var i = 0; i < spIconArray.length; i++){
-			spIconArray[i].style.color = styleWithTime.mainButtonColor;
-			spIconArray[i].style.display = "block";
-		}
-		//显示星星
-		if (isNight){
-			var divStar1 = document.getElementById('divStar1');
-			divStar1.style.display = 'block';
-			divStar1.style.top = window.innerHeight / 5 + 'px';
+		divTopMainButton.style.boxShadow = "0px 0px 10px 2px #F6F6F6";
+		//初始画星星和云
+		divStar1.style.top = window.innerHeight / 5 + 'px';
 			divStar1.style.left = window.innerWidth / 7 + 'px';
-			this.setStart1Animation(divStar1);
-			var divStar2 = document.getElementById('divStar2');
-			divStar2.style.display = 'block';
 			divStar2.style.top = window.innerHeight / 1.8 + 'px';
 			divStar2.style.left = window.innerWidth / 4 + 'px';
-			this.setStart2Animation(divStar2);
-			var divStar3 = document.getElementById('divStar3');
-			divStar3.style.display = 'block';
 			divStar3.style.top = window.innerHeight / 4 + 'px';
 			divStar3.style.left = window.innerWidth / 1.2 + 'px';
+			this.setStart1Animation(divStar1);
+			this.setStart2Animation(divStar2);
 			this.setStart3Animation(divStar3);
+			divCloud1.style.top = window.innerHeight / 4 + 'px';
+			divCloud1.style.left = window.innerWidth / 1.3 + 'px';
+			divCloud2.style.top = window.innerHeight / 1.9 + 'px';
+			divCloud2.style.left = window.innerWidth / 4 + 'px';
+			this.setCloud1Animation(divCloud1);
+			this.setCloud2Animation(divCloud2);
+		//显示星星
+		if (isNight){
+			divStar1.style.display = 'block';
+			divStar2.style.display = 'block';
+			divStar3.style.display = 'block';
 		}
 		else {
 			//显示云
-			var divCloud1 = document.getElementById('divCloud1');
 			divCloud1.style.display = 'block';
-			divCloud1.style.top = window.innerHeight / 4 + 'px';
-			divCloud1.style.left = window.innerWidth / 1.3 + 'px';
-			this.setCloud1Animation(divCloud1);
-			var divCloud2 = document.getElementById('divCloud2');
 			divCloud2.style.display = 'block';
-			divCloud2.style.top = window.innerHeight / 1.9 + 'px';
-			divCloud2.style.left = window.innerWidth / 4 + 'px';
-			this.setCloud2Animation(divCloud2);
 		}
 		//因为ios滚动时，主按钮会被navbar遮盖，设置z-index无用，所以只能设置这个高度
 		//ios上有动画
@@ -108,10 +85,10 @@
 				TweenLite.to(divMountain2, 0.4, {top: divMountain2.offsetTop - 95 + 'px'});
 				TweenLite.to(divMountain3, 0.4, {top: divMountain3.offsetTop - 95 + 'px'});
 				if (next){
-					TweenLite.to(divDiaryList, 0.4, {top: divDiaryList.offsetTop - 100 + 'px', onComplete:next});
+					TweenLite.to(divDiaryList, 0.4, {top: divDiaryList.offsetTop - 95 + 'px', onComplete:next});
 				}
 				else {
-					TweenLite.to(divDiaryList, 0.4, {top: divDiaryList.offsetTop - 100 + 'px'});
+					TweenLite.to(divDiaryList, 0.4, {top: divDiaryList.offsetTop - 95 + 'px'});
 				}
 			}
 			else {
@@ -119,7 +96,7 @@
 					divMountain1.style.top = divMountain1.offsetTop - 95 + 'px';
 					divMountain2.style.top = divMountain2.offsetTop - 95 + 'px';
 					divMountain3.style.top = divMountain3.offsetTop - 95 + 'px';
-					divDiaryList.style.top = divDiaryList.offsetTop - 100 + 'px';
+					divDiaryList.style.top = divDiaryList.offsetTop - 95 + 'px';
 					next();	
 				}
 			}
@@ -163,11 +140,10 @@
 			clamp: 3
 		});
 		//调整颜色
-		li.getElementsByClassName('divDiaryTimelineLeft')[0].style.color = styleWithTime.mainButtonColor;
-		li.getElementsByClassName('divTimelineLineContainer')[0].style.color = styleWithTime.mainButtonColor;
-		li.getElementsByClassName('divTimelineLineContainer')[0].style.borderColor = styleWithTime.mainButtonColor;
-		li.getElementsByClassName('divTimelineLineDown')[0].style.borderColor = styleWithTime.mainButtonColor;
-		li.getElementsByClassName('divDiaryContentItem')[0].style.background = styleWithTime.mainButtonColor;
+		//li.getElementsByClassName('divTimelineLineContainer')[0].style.color = styleWithTime.mainButtonColor;
+		//li.getElementsByClassName('divTimelineLineContainer')[0].style.borderColor = styleWithTime.mainButtonColor;
+		//li.getElementsByClassName('divTimelineLineDown')[0].style.borderColor = styleWithTime.mainButtonColor;
+		//li.getElementsByClassName('divDiaryContentItem')[0].style.background = styleWithTime.mainButtonColor;
 		ulDairyList.appendChild(li);
 	}
 	/**
@@ -180,14 +156,14 @@
 		function setMainButtonAnimationUP() {
 			tweenMainButtonAnimationUP = TweenLite.to(divMainButton, 2, {
 				top: divMainButtonInitTop - 4 + "px",
-				boxShadow: "0px 0px 0px 0px " + styleWithTime.mainButtonColor,
+				boxShadow: "0px 0px 0px 0px #F6F6F6",
 				onComplete: setMainButtonAnimationDown,
 			});
 		}
 		function setTopMainButtonAnimationUP() {
 			tweenTopMainButtonAnimationUP = TweenLite.to(divTopMainButton, 2, {
 				top: divTopMainButtonInitTop - 4 + "px",
-				boxShadow: "0px 0px 0px 0px " + styleWithTime.mainButtonColor,
+				boxShadow: "0px 0px 0px 0px #F6F6F6",
 				onComplete: setTopMainButtonAnimationDown,
 			});
 		}
@@ -195,14 +171,14 @@
 		function setMainButtonAnimationDown() {
 			tweenMainButtonAnimationDown = TweenLite.to(divMainButton, 2, {
 				top: divMainButtonInitTop + 4 + "px",
-				boxShadow: "0px 0px 10px 2px " + styleWithTime.mainButtonColor,
+				boxShadow: "0px 0px 10px 2px #F6F6F6",
 				onComplete: setMainButtonAnimationUP
 			});
 		}
 		function setTopMainButtonAnimationDown() {
 			tweenTopMainButtonAnimationDown = TweenLite.to(divTopMainButton, 2, {
 				top: divTopMainButtonInitTop + 4 + "px",
-				boxShadow: "0px 0px 10px 2px " + styleWithTime.mainButtonColor,
+				boxShadow: "0px 0px 10px 2px #F6F6F6",
 				onComplete: setTopMainButtonAnimationUP
 			});
 		}
