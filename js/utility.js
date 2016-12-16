@@ -42,5 +42,15 @@
 		}
 		return actualTop;
 	}
+	/**
+	 * 绑定点击
+	 * @param {Object} cfg
+	 */
+	_utility.prototype.bindTap = function(cfg){
+		cfg.element.addEventListener('tap', cfg.callback, false);
+		cfg.element.addEventListener('click', cfg.callback, false);
+		cfg.element.addEventListener('longtap', cfg.callback, false);
+		cfg.element.addEventListener('hold', cfg.callback, false);
+	}
 	window.utility = new _utility();
 })();

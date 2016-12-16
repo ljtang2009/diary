@@ -154,12 +154,18 @@
 			linkTimeStyle.setAttribute("href","css/" + (isNight ? "night" : "day") + ".css");
 			var currentWebview;		//当前webview
 			var isIOS = false;		//是否是IOS
-			var detailWebview;
 			mui.init({
-				//swipeBack: false, //关闭侧滑
+				gestureConfig:{
+					tap : true,
+					doubletap : true,
+					longtap : true,
+					hold : true,
+					release : true
+				}
 			});
 			mui.plusReady(function() {
-				var detailWebview = mui.preload({
+				//预加载
+				mui.preload({
 //				    url: "detail.html",
 					url: "test/im-chat.html",
 				    id: "detail",
@@ -167,8 +173,7 @@
 				        username:'mui'
 				    }
 				});
-				divMainButton.removeEventListener('tap', gotoDetail, false);
-				divMainButton.addEventListener('tap', gotoDetail, false);
+				utility.bindTap({element:divMainButton,callback:gotoDetail});
 				//开始拖动
 				//因为ios上的webview滚动会阻塞js，所以用touch事件
 				document.body.addEventListener('touchstart', function (event) {

@@ -257,7 +257,8 @@
 					"css/night.css"
 				],
 				"refer": [
-					"detail.html"
+					"detail.html",
+					"test/im-chat.html"
 				],
 				"priority": 0
 			},
@@ -278,6 +279,19 @@
 					"lib/flexText/jquery.flexText.min.js",
 					"lib/jquery/jquery.min.js",
 					"lib/flexText/style.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"test/im-chat.html": {
+				"resources": [
+					"js/arttmpl.js",
+					"js/mui.imageViewer.js",
+					"js/mui.min.js",
+					"fonts/mui.ttf",
+					"css/mui.min.css",
+					"css/app.css",
+					"css/mui.imageviewer.css"
 				],
 				"refer": [],
 				"priority": 0
